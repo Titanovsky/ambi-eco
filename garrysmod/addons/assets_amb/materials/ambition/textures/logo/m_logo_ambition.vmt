@@ -1,0 +1,9 @@
+VertexLitGeneric
+{
+	$basetexture ambition/textures/logo/logo_ambition
+	$surfaceprop Tile
+
+	//	A M B I T I O N
+	//Discord 	discord.gg/pYGyFtYqm5
+	//Steam 	steamcommunity.com/groups/ambitiongmod
+}

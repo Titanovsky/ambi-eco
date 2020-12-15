@@ -1,0 +1,37 @@
+AMB.UI.Sounds.CreateSound( 'ButtonClick', 'UI/buttonclick.wav' )
+AMB.UI.Sounds.CreateSound( 'ButtonRelease', 'UI/buttonclickrelease.wav' )
+AMB.UI.Sounds.CreateSound( 'ButtonRollOver', 'UI/buttonrollover.wav' )
+
+AMB.UI.Sounds.CreateSound( 'ButtonBlip', 'buttons/blip1.wav' )
+AMB.UI.Sounds.CreateSound( 'Button1', 'buttons/button1.wav' )
+AMB.UI.Sounds.CreateSound( 'Button2', 'buttons/button2.wav' )
+AMB.UI.Sounds.CreateSound( 'Button3', 'buttons/button3.wav' )
+AMB.UI.Sounds.CreateSound( 'Button4', 'buttons/button4.wav' )
+AMB.UI.Sounds.CreateSound( 'Button5', 'buttons/button5.wav' )
+AMB.UI.Sounds.CreateSound( 'Button6', 'buttons/button6.wav' )
+AMB.UI.Sounds.CreateSound( 'Button7', 'buttons/blip1.wav' ) -- not exists
+AMB.UI.Sounds.CreateSound( 'Button8', 'buttons/button8.wav' )
+AMB.UI.Sounds.CreateSound( 'Button9', 'buttons/button9.wav' )
+AMB.UI.Sounds.CreateSound( 'Button10', 'buttons/button10.wav' )
+AMB.UI.Sounds.CreateSound( 'Button11', 'buttons/blip1.wav' )
+AMB.UI.Sounds.CreateSound( 'Button12', 'buttons/blip1.wav' )
+AMB.UI.Sounds.CreateSound( 'Button13', 'buttons/blip1.wav' )
+AMB.UI.Sounds.CreateSound( 'Button14', 'buttons/button14.wav' )
+AMB.UI.Sounds.CreateSound( 'Button15', 'buttons/button15.wav' )
+AMB.UI.Sounds.CreateSound( 'Button16', 'buttons/button16.wav' )
+AMB.UI.Sounds.CreateSound( 'Button17', 'buttons/button17.wav' )
+AMB.UI.Sounds.CreateSound( 'Button18', 'buttons/button18.wav' )
+AMB.UI.Sounds.CreateSound( 'Button19', 'buttons/button19.wav' )
+
+AMB.UI.Sounds.CreateSound( 'CombineButtonLocked', 'buttons/combine_button_locked.wav' )
+AMB.UI.Sounds.CreateSound( 'CombineButton1', 'buttons/combine_button1.wav' )
+AMB.UI.Sounds.CreateSound( 'CombineButton2', 'buttons/combine_button2.wav' )
+AMB.UI.Sounds.CreateSound( 'CombineButton3', 'buttons/combine_button3.wav' )
+AMB.UI.Sounds.CreateSound( 'CombineButton4', 'buttons/combine_button_locked.wav' )
+AMB.UI.Sounds.CreateSound( 'CombineButton5', 'buttons/combine_button5.wav' )
+AMB.UI.Sounds.CreateSound( 'CombineButton6', 'buttons/combine_button_locked.wav' )
+AMB.UI.Sounds.CreateSound( 'CombineButton7', 'buttons/combine_button7.wav' )
+
+AMB.UI.Sounds.CreateSound( 'LightswitchButton', 'buttons/lightswitch2.wav' )
+
+for i = 1, 8 do AMB.UI.Sounds.CreateSound( 'LeverButton'..tostring( i ), 'buttons/lever'..tostring( i )..'.wav' ) end
