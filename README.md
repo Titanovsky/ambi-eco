@@ -1,5 +1,7 @@
 # Architecture-Of-Ambition
 
+![The First Logo Ambition](https://i.imgur.com/8IZitjD.png)
+
 # Introduce
 
 Ну, привет. Это репозиторий моего первого крупного и серьёзного проекта – Архитектура серверов проекта **AMBITION**.
