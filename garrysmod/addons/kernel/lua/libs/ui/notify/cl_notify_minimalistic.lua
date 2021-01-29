@@ -14,12 +14,12 @@ AMB.UI.Notify.RegisterNotify( 2, 'Minimalistic Notify', 'A M B I T I O N', funct
     local time          = tVars.time or 4
     local text          = tVars.text or ''
     local color_point   = tVars.color or C.ABS_WHITE
-    local sound         = tVars.sound or ''
+    local sound         = tVars.sound or false
 
     surface.SetFont( '18 Ambition' )
     local xchar, _ = surface.GetTextSize( text )
 
-    AMB.UI.Sounds.PlaySound( sound )
+    if sound then AMB.UI.Sounds.PlaySound( sound ) end
 
     local notify = AMB.UI.GUI.DrawPanel( nil, 0, 28, 4, h-104-ID*30, function( self, w, h ) 
     

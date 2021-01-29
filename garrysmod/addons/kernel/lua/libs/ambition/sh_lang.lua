@@ -1,7 +1,10 @@
 AMB.Language = AMB.Language or {}
 AMB.Language.table = AMB.Language.table or {}
 
+local CreateClientConVar = CreateClientConVar
 local GetConVar = GetConvar
+
+CreateClientConVar( 'amb_lang', 'en', true )
 
 function AMB.Language.Add( sPattern, tLanguages )
 
@@ -13,7 +16,7 @@ end
 
 function AMB.Language.Get( sPattern )
 
-    local lang = GetConvar( 'cl_language' ):GetString()
+    local lang = GetConvar( 'amb_lang' ):GetString()
 
     if not isstring( sPattern ) then sPattern = tostring( sPattern ) end
     if not AMB.Language.table[ sPattern ] then AMB.ErrorLog( 'Language', 'Pattern '..sPattern..' is not valid' ) return '' end

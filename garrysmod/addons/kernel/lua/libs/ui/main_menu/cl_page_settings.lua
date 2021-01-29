@@ -32,7 +32,7 @@ local function ShowMenuNotify()
 end
 concommand.Add( 'amb_menu_notify', ShowMenuNotify )
 
-local page = AMB.UI.MainMenu.Pages.AddPage( 2, 'Настройки', C.AMB_GREEN, C.FLAT_GREEN )
+local page = AMB.UI.MainMenu.Pages.AddPage( 2, 'Настройки', C.AMBITION, C.AMBITION )
 AMB.UI.MainMenu.Pages.SetPage( page, function( vguiFrame ) 
 
     local frame = AMB.UI.GUI.DrawPanel( vguiFrame, vguiFrame:GetWide(), vguiFrame:GetTall(), 0, 0, function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, C.AMB_BLACK ) end )

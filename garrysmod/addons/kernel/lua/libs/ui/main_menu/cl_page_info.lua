@@ -8,7 +8,7 @@ local COLOR_PANEL = Color( 0, 0, 0, 80 )
 surface.SetFont( '32 Ambition' )
 local xchar, _ = surface.GetTextSize( GetHostName() )
 
-local page = AMB.UI.MainMenu.Pages.AddPage( 1, 'Инфо', C.AMB_RED, C.FLAT_RED )
+local page = AMB.UI.MainMenu.Pages.AddPage( 1, 'Инфо', C.AMBITION, C.AMBITION )
 AMB.UI.MainMenu.Pages.SetPage( page, function( vguiFrame ) 
 
     local frame = AMB.UI.GUI.DrawPanel( vguiFrame, vguiFrame:GetWide(), vguiFrame:GetTall(), 0, 0, function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, C.AMB_BLACK ) end )

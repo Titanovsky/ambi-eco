@@ -12,7 +12,7 @@ local h = ScrH()
 local cfg = AMB.UI.MainMenu.Config
 local C = AMB.G.C
 
-local choice_page = GetConVar( 'amb_menu_page' ):GetInt()
+local choice_page = GetConVar( 'amb_mm_page' ):GetInt()
 local choice_page_text = cfg.text_error
 
 cfg.debug = false
@@ -60,17 +60,9 @@ function AMB.UI.MainMenu.CallMenu( nPage )
     logo.color = C.AMBITION
 
     local logo_button = AMB.UI.GUI.DrawButton( logo, logo:GetWide()-32, logo:GetTall()-16, 16, 8, nil, nil, nil, function() gui.OpenURL( 'https://steamcommunity.com/groups/ambitiongmod' ) end, function() end )
-    logo_button.OnCursorEntered = function( self )
-
-        self:GetParent().color = C.ABS_WHITE
-
-    end
-    logo_button.OnCursorExited = function( self )
-
-        self:GetParent().color = C.AMBITION
-
-    end
-
+    logo_button.OnCursorEntered = function( self ) self:GetParent().color = C.ABS_WHITE end
+    logo_button.OnCursorExited = function( self ) self:GetParent().color = C.AMBITION end
+    
     local side_bar = AMB.UI.GUI.DrawPanel( amb_mm, amb_mm:GetWide()/4, amb_mm:GetTall()-56, 0, 56, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, C.AMB_BLACK ) end )
     local panel_divided_side = AMB.UI.GUI.DrawPanel( amb_mm, 4, amb_mm:GetTall(), amb_mm:GetWide()/4, 0, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, C.AMBITION ) end )
 
@@ -97,7 +89,7 @@ function AMB.UI.MainMenu.CallMenu( nPage )
         button_page.OnCursorEntered = function( self )
 
             self:SetFont( '22 Ambition' )
-            side_bar_page:SizeTo( 14, page:GetTall(), 0.25, 0, -1, function() end )
+            side_bar_page:SizeTo( self:GetParent():GetWide()/6, page:GetTall(), 0.25, 0, -1, function() end )
 
         end
         button_page.OnCursorExited = function( self )
@@ -113,12 +105,10 @@ function AMB.UI.MainMenu.CallMenu( nPage )
     
         if ( nKey == KEY_TAB ) or ( nKey == KEY_F4 ) then AMB.UI.MainMenu.RemoveMenu() end
         -- !!! DANGER KEY_W AND KEY_S WITH KEYINPUT PANEL !!!
-        --if ( nKey == KEY_UP ) or ( nKey == KEY_W ) then AMB.UI.MainMenu.Pages.ChoicePage( BindKeyChoice( choice_page-1 ), pages_panel ) end
-        --if ( nKey == KEY_DOWN ) or ( nKey == KEY_S ) then AMB.UI.MainMenu.Pages.ChoicePage( BindKeyChoice( choice_page+1 ), pages_panel ) end
 
     end
 
-    if not nPage then AMB.UI.MainMenu.Pages.ChoicePage( GetConVar( 'amb_mm_page' ):GetInt(), pages_panel ) end
+    AMB.UI.MainMenu.Pages.ChoicePage( GetConVar( 'amb_mm_page' ):GetInt(), pages_panel )
 
 end
 
@@ -144,7 +134,7 @@ end
 
 hook.Add( 'ScoreboardShow', 'AMB.UI.MainMenu.CallMainMenu', function() 
 
-    if ( GetConVar( 'amb_mm_page' ):GetInt() == 1 ) then
+    if ( GetConVar( 'amb_mm_enable' ):GetInt() == 1 ) then
     
         AMB.UI.MainMenu.CallMenu() 
     
@@ -155,7 +145,7 @@ hook.Add( 'ScoreboardShow', 'AMB.UI.MainMenu.CallMainMenu', function()
 end )
 hook.Add( 'ScoreboardHide', 'AMB.UI.MainMenu.HideMainMenu', function() 
 
-    if ( GetConVar( 'amb_mm_page' ):GetInt() == 1 ) then
+    if ( GetConVar( 'amb_mm_enable' ):GetInt() == 1 ) then
 
         return false 
 
@@ -173,13 +163,21 @@ function AMB.UI.MainMenu.Pages.AddPage( nPage, sName, cColorSide, cColorBackgrou
 
         name = string.upper( sName ) or 'NaN',
         color_side = cColorSide or C.AMB_WHITE,
-        color_background = ColorAlpha( cColorBackground, 80 ) or ColorAlpha( C.FLAT_WHITE, 80 ),
+        color_background = ColorAlpha( cColorBackground, 40 ) or ColorAlpha( C.FLAT_WHITE, 80 ),
         color_text = cColorText or C.AMB_WHITE,
         func = function( vguiFrame ) end
 
     }
 
     return nPage
+
+end
+
+function AMB.UI.MainMenu.Pages.RemovePage( nPage )
+
+    AMB.UI.MainMenu.Pages.list[ nPage ] = nil
+
+    return true
 
 end
 

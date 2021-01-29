@@ -5,10 +5,10 @@ local w = ScrW()
 local h = ScrH()
 local COLOR_PANEL = Color( 0, 0, 0, 80 )
 
-local page = AMB.UI.MainMenu.Pages.AddPage( 3, 'Игроки', C.AMB_BLUE, C.FLAT_BLUE )
+local page = AMB.UI.MainMenu.Pages.AddPage( 3, 'Игроки', C.AMBITION, C.AMBITION )
 AMB.UI.MainMenu.Pages.SetPage( page, function( vguiFrame ) 
 
-    local frame = AMB.UI.GUI.DrawScrollPanel( vguiFrame, vguiFrame:GetWide(), vguiFrame:GetTall(), 0, 0, function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, C.AMB_BLACK ) end )
+    local frame = AMB.UI.GUI.DrawScrollPanel( vguiFrame, vguiFrame:GetWide(), vguiFrame:GetTall(), 0, 0, function( self, w, h ) draw.RoundedBox( 4, 0, 0, w, h, Color( 45, 45, 48 ) ) end )
     local sbar = frame:GetVBar()
     sbar:SetSize( 0, 0 )
 

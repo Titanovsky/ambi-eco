@@ -42,6 +42,18 @@ local custom_vars = {
 
     },
 
+    [ 'hp_bar' ] = {
+
+        [ 'color1' ] = C.FLAT_RED,
+
+    },
+
+    [ 'armor_bar' ] = {
+
+        [ 'color1' ] = C.FLAT_BLUE,
+
+    },
+
 }
 
 local function GetPos( sElement )
@@ -54,9 +66,10 @@ local function GetPos( sElement )
 
 end
 
-local function GetColor( sElement )
+local function GetColor( sElement, bRainbow )
 
     if not sElement then sElement = '' end
+    if ( GetConVar( 'amb_custom_hud_amb_color' ):GetInt() == 0 ) and bRainbow then return HSVToColor( ( CurTime() * 80 ), 1, 1 ) end
     if not custom_vars[ sElement ] then return Color( 0, 0, 0 ) end
     if not custom_vars[ sElement ][ 'color'..GetConVar( 'amb_custom_hud_amb_color' ):GetInt() ] then return custom_vars[ sElement ][ 'color1' ] end
 
@@ -97,7 +110,7 @@ AMB.UI.HUD.RegisterHUD( 1, 'Ambition HUD', 'AMBITION', function()
 
     hud = AMB.UI.GUI.DrawPanel( nil, 160 + ( 20 * GetConVar( 'amb_custom_hud_amb_size' ):GetInt() ), 60 + ( 20 * GetConVar( 'amb_custom_hud_amb_size' ):GetInt() ), x, y, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, GetColor( 'main' ) ) end )
 
-    local upper_line = AMB.UI.GUI.DrawPanel( hud, hud:GetWide(), 1 + ( 1 * GetConVar( 'amb_custom_hud_amb_size' ):GetInt() ), 0, 0, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, GetColor( 'upper_line' ) ) end )
+    local upper_line = AMB.UI.GUI.DrawPanel( hud, hud:GetWide(), 1 + ( 1 * GetConVar( 'amb_custom_hud_amb_size' ):GetInt() ), 0, 0, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, GetColor( 'upper_line', true ) ) end )
 
     local nick = AMB.UI.GUI.DrawPanel( hud, hud:GetWide(), 10 + ( 3 * GetConVar( 'amb_custom_hud_amb_size' ):GetInt() ), 0, upper_line:GetTall(), function( self, w, h ) 
     
