@@ -55,5 +55,6 @@ function AMB.ErrorLog( sHeader, sText )
     AMB.console_logs[ #AMB.console_logs+1 ] = { type = 'Error', text = sHeader..' | '..sText, date = os.date( '%c', os.time() ) }
 
     MsgC( AMB.G.C.AMB_ERROR, '## [ERROR]', AMB.G.C.AMB_GRAY, ' | '..sHeader..' | ', AMB.G.C.AMB_WHITE, sText..'!', AMB.G.C.AMB_ERROR, ' \t##\n' )
+    print( debug.traceback() )
 
 end

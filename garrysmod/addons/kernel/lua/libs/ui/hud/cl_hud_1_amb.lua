@@ -199,6 +199,3 @@ cvars.AddChangeCallback( 'amb_custom_hud_amb_size', function()
     if ValidPanel( hud ) then hud:Remove() return end
 
 end )
-
-RunConsoleCommand( 'amb_hud', '2' ) -- debug
-RunConsoleCommand( 'amb_hud', '1' ) -- debug

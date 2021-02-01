@@ -3,7 +3,6 @@ AMB.NW = AMB.NW or {}
 function AMB.NW.Set( eEntity, sStats, anyValue, sType )
 
     if not IsValid( eEntity ) then AMB.ErrorLog( 'NW', 'Cannot use NW.Set on not valid Entity' ) return false end
-    if not anyValue then AMB.ErrorLog( 'NW', 'Non correct anyValue for NW.Set' ) return false end
     if not sStats or not isstring( sStats ) then AMB.ErrorLog( 'NW', 'Non correct sStats for NW.Set' ) return false end
     if not sType or not isstring( sType ) then AMB.ErrorLog( 'NW', 'Non correct sType for NW.Set' ) return false end
 
@@ -89,7 +88,6 @@ end
 function AMB.NW.SetBool( eEntity, sStats, bValue )
 
     if not IsValid( eEntity ) then AMB.ErrorLog( 'NW', 'Cannot use NW.SetBool on not valid Entity' ) return false end
-    if not bValue then AMB.ErrorLog( 'NW', 'Non correct iValue for NW.SetBool' ) return false end
     if not sStats or not isstring( sStats ) then AMB.ErrorLog( 'NW', 'Non correct sStats for NW.SetBool' ) return false end
 
     return eEntity:SetNWBool( sStats, bValue )
@@ -99,7 +97,7 @@ end
 function AMB.NW.SetEntity( eEntity, sStats, eValue )
 
     if not IsValid( eEntity ) then AMB.ErrorLog( 'NW', 'Cannot use NW.SetEntity on not valid Entity' ) return false end
-    if not bValue then AMB.ErrorLog( 'NW', 'Non correct eValue for NW.SetEntity' ) return false end
+    if not eValue then AMB.ErrorLog( 'NW', 'Non correct eValue for NW.SetEntity' ) return false end
     if not sStats or not isstring( sStats ) then AMB.ErrorLog( 'NW', 'Non correct sStats for NW.SetEntity' ) return false end
 
     return eEntity:GetNWEntity( sStats, eValue )
