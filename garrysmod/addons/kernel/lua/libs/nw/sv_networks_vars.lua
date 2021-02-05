@@ -100,7 +100,7 @@ function AMB.NW.SetEntity( eEntity, sStats, eValue )
     if not eValue then AMB.ErrorLog( 'NW', 'Non correct eValue for NW.SetEntity' ) return false end
     if not sStats or not isstring( sStats ) then AMB.ErrorLog( 'NW', 'Non correct sStats for NW.SetEntity' ) return false end
 
-    return eEntity:GetNWEntity( sStats, eValue )
+    return eEntity:SetNWEntity( sStats, eValue )
 
 end
 -- Specific: Vector
