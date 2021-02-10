@@ -7,7 +7,7 @@ local COLOR_PANEL = Color( 48, 48, 48 )
 
 function AMB.UI.Dev.OpenColorsMenu()
 
-    local frame = AMB.UI.GUI.DrawFrame( nil, 800, 600, w/2-400, h/2-300, '', true, false, true, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, C.AMBITION ) end )
+    local frame = AMB.UI.GUI.DrawFrame( nil, 800, 600, w/2-400, h/2-300, '', true, true, true, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, C.AMBITION ) end )
     local panel = AMB.UI.GUI.DrawScrollPanel( frame, frame:GetWide(), frame:GetTall()-32, 0, 32, function( self, w, h ) draw.RoundedBox( 0, 0, 0, w, h, COLOR_PANEL ) end )
     local grid = AMB.UI.GUI.DrawGrid( panel, 129, 128, 8, 8, 6 )
 

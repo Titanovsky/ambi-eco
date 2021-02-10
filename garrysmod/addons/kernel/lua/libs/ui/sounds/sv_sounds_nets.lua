@@ -1,7 +1,7 @@
 AMB.UI = AMB.UI or {}
 AMB.UI.Sounds = AMB.UI.Sounds or {}
 
-local net_string = AMB.Network.AddString( 'ambSoundPlay' )
+local net_string = AMB.Network.AddString( 'AmbSoundPlay' )
 
 function AMB.UI.Sounds.PlaySound( ePly, sName )
 

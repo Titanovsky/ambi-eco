@@ -1,6 +1,9 @@
 AMB.Loader = AMB.Loader or {}
+AMB.Loader.files = AMB.Loader.files or {}
 AMB.Loader.modules = AMB.Loader.modules or {}
 AMB.Loader.libraries = AMB.Loader.libraries or {}
+
+local current_files = {}
 
 local file = file
 local string = string
@@ -11,18 +14,29 @@ local AddCSLuaFile = AddCSLuaFile
 
 local function InitFile( sName, sFlag )
 
-    if ( sFlag == 'sh_' ) then
+    sFlag = string.Explode( '_', sFlag )
+    local tag = sFlag[ 1 ]
+
+    if ( tag == 'cfg' ) or ( tag == 'sh' ) or ( tag == 'npc' ) or ( tag == 'ent' ) or ( tag == 'wep' ) or ( tag == 'veh' ) then
 
         include( sName )
         AddCSLuaFile( sName )
 
-    elseif ( sFlag == 'sv_' ) then
+    elseif ( tag == 'sv' ) then
 
         if SERVER then include( sName ) end
 
-    elseif ( sFlag == 'cl_' ) then
+    elseif ( tag == 'cl' ) then
 
         if SERVER then AddCSLuaFile( sName ) elseif CLIENT then include( sName ) end
+
+    elseif ( tag == 'id' ) then
+
+        local ID = sFlag[ 2 ]
+
+        resource.AddWorkshop( ID )
+
+        AMB.Debug( function() print( '[DEBUG] Added workshop ['..ID..']' ) end )
 
     end
 
@@ -36,8 +50,9 @@ local function LoadFiles( sDirectory )
 
     for _, v in pairs( files ) do
 
-        AMB.Loader.modules[ #AMB.Loader.modules + 1 ] = sDirectory..'/'..v
-        InitFile( 'modules/'..sDirectory..'/'..v , string.Left( v, 3 ) )
+        AMB.Loader.files[ #AMB.Loader.files + 1 ] = sDirectory..'/'..v
+        current_files[ #current_files + 1 ] = sDirectory..'/'..v
+        InitFile( 'modules/'..sDirectory..'/'..v , v )
 
     end
 
@@ -51,7 +66,7 @@ local function LoadFiles( sDirectory )
 
     end
 
-    return AMB.Loader.modules
+    return AMB.Loader.files
 
 end
 
@@ -94,7 +109,7 @@ function AMB.Loader.ConnectMicroKernel()
 
     AMB.Debug( function() 
     
-        print( '[Debug] List of Libraries: ' )
+        print( '[DEBUG] List of Libraries: ' )
         PrintTable( AMB.Loader.libraries )
 
     end )
@@ -109,13 +124,17 @@ function AMB.Loader.ConnectModule( sName, sDescription )
 
     sDescription = sDescription or ''
 
-    print( '[Kernel] Module '..sName..' | '..sDescription )
+    print( '[KERNEL] ['..string.upper( sName )..'] - '..sDescription )
 
     AMB.Debug( function() 
     
-        print( '[Debug] List of Modules: ' )
-        PrintTable( AMB.Loader.modules )
+        print( '[DEBUG] ['..string.upper( sName )..'] List of Files: ' )
+        PrintTable( current_files )
 
     end )
+
+    print( '\n' )
+
+    current_files = {}
 
 end

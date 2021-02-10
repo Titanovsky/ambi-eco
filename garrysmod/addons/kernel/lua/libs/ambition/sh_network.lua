@@ -6,7 +6,7 @@ local net  = net
 
 function AMB.Network.AddString( sName )
 
-    util.AddNetworkString( sName )
+    if SERVER then util.AddNetworkString( sName ) end
     AMB.Network.table[ #AMB.Network.table+1 ] = sName
 
     return sName

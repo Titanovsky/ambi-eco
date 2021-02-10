@@ -6,7 +6,7 @@ local C = AMB.G.C
 
 local now_notify = {}
 
-AMB.UI.Notify.RegisterNotify( 2, 'Minimalistic Notify', 'A M B I T I O N', function( tVars )
+AMB.UI.Notify.RegisterNotify( 2, 'Minimalistic Notify', 'AMBITION', function( tVars )
 
     now_notify[ #now_notify+1 ] = 0
     local ID = #now_notify
