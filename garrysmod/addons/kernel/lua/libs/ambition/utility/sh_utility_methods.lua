@@ -25,3 +25,23 @@ function AMB.Utility.FindPlayerOnData( sArg, fData, bOnlyHumans )
     return players[ 1 ]
 
 end
+
+function AMB.Utility.GetRussianDate( nDate )
+
+    return os.date( '%d.%m.%Y', nDate )
+
+end
+
+function AMB.Utility.StringIsNullOrWhitespaces( sString )
+
+    if not sString or not isstring( sString ) then return true end
+
+    for _, char in ipairs( string.Explode( '', sString ) ) do
+
+        if ( char ~= ' ' ) then return false end
+
+    end
+
+    return true
+
+end

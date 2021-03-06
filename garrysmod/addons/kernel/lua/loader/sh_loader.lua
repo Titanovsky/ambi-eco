@@ -35,8 +35,25 @@ local function InitFile( sName, sFlag )
         local ID = sFlag[ 2 ]
 
         resource.AddWorkshop( ID )
+        local full_name = ''
 
-        AMB.Debug( function() print( '[DEBUG] Added workshop ['..ID..']' ) end )
+        if ( #sFlag > 2 ) then
+
+            for k, str in ipairs( sFlag ) do
+
+                if ( str == 'id' ) or ( str == ID ) then continue end
+
+                str = string.SetChar( str, 1, string.upper( string.sub( str, 1, 1 ) ) )
+
+                local margin = ( k == #sFlag ) and '' or ' '
+
+                full_name = full_name..str..margin
+
+            end
+
+        end
+
+        AMB.Debug( function() print( '[DEBUG] [MODULES] Added workshop ['..ID..'] ['..full_name..']' ) end )
 
     end
 
@@ -136,5 +153,49 @@ function AMB.Loader.ConnectModule( sName, sDescription )
     print( '\n' )
 
     current_files = {}
+
+end
+
+function AMB.Loader.ConnectResourceWorkshopFromAddons()
+
+    AMB.Debug( function() print( '[DEBUG] [ADDONS] Initialize connection WorkshopID' ) end )
+
+    local _, directories = file.Find( 'addons/*', 'GAME' )
+
+    for _, dir in pairs( directories ) do
+
+        local files, _ = file.Find( 'addons/'..dir..'/*', 'GAME' )
+
+        for _, file in pairs( files ) do
+
+            if not string.StartWith( string.lower( file ), 'id' ) then continue end
+
+            local name = string.Explode( '_', file )
+            local ID = name[ 2 ]
+            local full_name = ''
+
+            if ( #name > 2 ) then
+
+                for k, str in ipairs( name ) do
+
+                    if ( str == 'id' ) or ( str == ID ) then continue end
+
+                    str = string.SetChar( str, 1, string.upper( string.sub( str, 1, 1 ) ) )
+
+                    local margin = ( k == #name ) and '' or ' '
+
+                    full_name = full_name..str..margin
+
+                end
+
+            end
+
+            resource.AddWorkshop( ID )
+
+            AMB.Debug( function() print( '[DEBUG] [ADDONS] Added workshop ['..ID..'] ['..full_name..']' ) end )
+
+        end
+
+    end
 
 end

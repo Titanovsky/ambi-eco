@@ -1,10 +1,10 @@
 AMB.Language = AMB.Language or {}
 AMB.Language.table = AMB.Language.table or {}
 
-local CreateClientConVar = CreateClientConVar
-local GetConVar = GetConvar
+-- ru: Russian
+-- en: English
 
-CreateClientConVar( 'amb_lang', 'en', true )
+if CLIENT then CreateClientConVar( 'amb_lang', AMB.Config.language, true ) end
 
 function AMB.Language.Add( sPattern, tLanguages )
 
@@ -12,11 +12,26 @@ function AMB.Language.Add( sPattern, tLanguages )
 
     AMB.Language.table[ sPattern ] = tLanguages
 
+    return AMB.Language.Get( sPattern )
+
+end
+
+function AMB.Language.AddBetweenRusAndEng( sPattern, sRussian, sEnglish, tOtherLanguages )
+
+    sRussian = sRussian or ''
+    sEnglish = sEnglish or sRussian
+
+    AMB.Language.table[ sPattern ] = { ru = sRussian, en = sEnglish }
+
+    if tOtherLanguages then AMB.Language.Add( sPattern, tOtherLanguages ) end
+
+    return AMB.Language.Get( sPattern )
+
 end
 
 function AMB.Language.Get( sPattern )
 
-    local lang = GetConvar( 'amb_lang' ):GetString()
+    local lang = SERVER and AMB.Config.language or GetConVar( 'amb_lang' ):GetString()
 
     if not isstring( sPattern ) then sPattern = tostring( sPattern ) end
     if not AMB.Language.table[ sPattern ] then AMB.ErrorLog( 'Language', 'Pattern '..sPattern..' is not valid' ) return '' end

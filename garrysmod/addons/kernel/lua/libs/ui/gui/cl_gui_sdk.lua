@@ -9,9 +9,11 @@ local vgui = vgui
 local draw = draw
 local surface = surface
 
-function AMB.UI.GUI.Draw( vguiPanel, vguiParent )
+function AMB.UI.GUI.Draw( sVGUIType, vguiParent )
 
-    local frame = vgui.Create( vguiPanel, vguiParent )
+    sVGUIType = sVGUIType or 'DFrame'
+
+    local frame = vgui.Create( sVGUIType, vguiParent )
 
     return frame
 
@@ -321,7 +323,25 @@ function AMB.UI.GUI.DrawTextEntry( vguiParent, wSize, hSize, xPos, yPos, sFont, 
     frame:SetMultiline( bMultiline )
     frame:SetNumeric( bOnlyNumber )
 
-    if fPaint then frame.Paint = fPaint end
+    return frame
+
+end
+
+function AMB.UI.GUI.DrawColorMixer( vguiParent, wSize, hSize, xPos, yPos, cDefaultColor, bSetPalette, bSetWangs, bSetAlphaBar )
+
+    wSize = wSize or 0
+    hSize = hSize or 0
+    xPos = xPos or 0
+    yPos = yPos or 0
+    cDefaultColor = cDefaultColor or C.ABS_BLACK
+
+    local frame = vgui.Create( 'DColorMixer', vguiParent )
+    frame:SetSize( wSize, hSize )
+    frame:SetPos( xPos, yPos )
+    frame:SetPalette( bSetPalette )
+    frame:SetWangs( bSetWangs )
+    frame:SetAlphaBar( bSetAlphaBar )
+    frame:SetColor( cDefaultColor )
 
     return frame
 

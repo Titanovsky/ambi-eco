@@ -1,18 +1,18 @@
 AMB.UI.MainMenu.Pages = AMB.UI.MainMenu.Pages or {}
 
 local CFG = AMB.UI.MainMenu.Config
+local C = AMB.G.C
+local SND = AMB.G.SND
+local CMD = 'amb_mm_'..AMB.Config.prefix
 
 local w = ScrW()
 local h = ScrH()
 
-local Cvar          = GetConVar
-local CvarBool      = function( console_var ) return Cvar( console_var ):GetBool() end
+local Cvar = GetConVar
+local CvarBool = function( sCvar ) return Cvar( CMD..'_'..sCvar ):GetBool() end
 
-local C     = AMB.G.C
-local SND   = AMB.G.SND
-
-local current_page_id = nil
-local current_pages = {}
+local current_page_id = 0
+local current_pages = {} -- для того, чтобы у тех, кто поставил multi на 1, загружали сохранёные страницы
 local pages = {}
 
 function AMB.UI.MainMenu.Pages.GetPage( nPage )
@@ -65,9 +65,9 @@ end
 
 function AMB.UI.MainMenu.Pages.BackSavePages( vguiFrame )
 
-    if not CvarBool( 'amb_mm_page_multi' ) and current_page_id then AMB.UI.MainMenu.Pages.OpenPage( current_page_id, vguiFrame ) return end
+    if not CvarBool( 'page_multi' ) and ( current_page_id > 0 ) then AMB.UI.MainMenu.Pages.OpenPage( current_page_id, vguiFrame ) return end
 
-    if not pages or ( #pages == 0 ) then return end
+    if not pages then return end
 
     for id, page in pairs( pages ) do
 
@@ -83,11 +83,12 @@ function AMB.UI.MainMenu.Pages.OpenPage( nPage, vguiFrame )
 
     if not page then return end
 
-    if current_pages[ nPage ] then return end
+    if current_pages[ nPage ] and CvarBool( 'page_multi' ) then return end -- это только для многостраничников
     
     current_page_id = nPage
-    current_pages[ nPage ] = page
-    if not CvarBool( 'amb_mm_page_multi' ) then 
+    current_pages[ nPage ] = true
+    
+    if not CvarBool( 'page_multi' ) then 
     
         if ValidPanel( vguiFrame ) then vguiFrame:Clear() end
         AMB.UI.MainMenu.Pages.ClearPages() 
@@ -111,14 +112,16 @@ function AMB.UI.MainMenu.Pages.ClosePage( nPage, vguiFrame )
     if not page then return end
     if not ValidPanel( vguiFrame ) then return end
 
-    current_pages[ nPage ] = nil
-    pages[ nPage ] = nil
+    current_pages[ nPage ] = false
+    pages[ nPage ] = false
+
+    if ( nPage == current_page_id ) then current_page_id = 0 end -- удаляет одиночную страничку
 
 end
 
 function AMB.UI.MainMenu.Pages.ClearPage( nPage )
 
-    pages[ nPage ] = false
+    pages[ nPage ] = nil
 
 end
 
@@ -127,7 +130,7 @@ function AMB.UI.MainMenu.Pages.ClearPages()
     pages = {}
 
 end
-concommand.Add( 'amb_mm_page_clears', AMB.UI.MainMenu.Pages.ClearPages )
+concommand.Add( 'amb_mm_clean', AMB.UI.MainMenu.Pages.ClearPages )
 
 function AMB.UI.MainMenu.Pages.ClearCurrentPages()
 

@@ -1,17 +1,17 @@
 local CFG = AMB.UI.MainMenu.Config
+local C = AMB.G.C
+local SND = AMB.G.SND
+local CMD = 'amb_mm_'..AMB.Config.prefix
 
 local w = ScrW()
 local h = ScrH()
 
-local Cvar          = GetConVar
-local CvarInt       = function( console_var ) return Cvar( console_var ):GetInt() end
-local CvarBool      = function( console_var ) return Cvar( console_var ):GetBool() end
-local CvarString    = function( console_var ) return Cvar( console_var ):GetString() end
-
-for name, tbl in pairs( AMB.UI.MainMenu.Config.convars ) do CreateClientConVar( name, tbl.default, true ) end
-
-local C     = AMB.G.C
-local SND   = AMB.G.SND
+-- ## Console Variables #########################################################
+local Cvar = GetConVar
+local CvarInt = function( sCvar ) return Cvar( CMD..'_'..sCvar ):GetInt() end
+local CvarBool = function( sCvar ) return Cvar( CMD..'_'..sCvar ):GetBool() end
+local CvarString = function( sCvar ) return Cvar( CMD..'_'..sCvar ):GetString() end
+-- ##############################################################################
 
 local cursor_x, cursor_y = nil
 
@@ -48,13 +48,23 @@ local function GetSize( sType )
 
 end
 
+local function CreateCvars()
+
+    if not CFG.enable then return end
+
+    for name, tbl in pairs( AMB.UI.MainMenu.Config.convars ) do CreateClientConVar( name, tbl.default, true ) end
+
+end
+CreateCvars() -- it need, when refreshing this file
+
 function AMB.UI.MainMenu.EnableLibrary( bEnable )
 
     AMB.UI.MainMenu.Config.enable = bEnable
+    CreateCvars()
 
     if bEnable then
         
-        hook.Add( 'ScoreboardShow', 'AMB.UI.MainMenu.ShowMenu',  function() AMB.UI.MainMenu.ShowMenu( CvarInt( 'amb_mm_page_tab' ) ) return false end )
+        hook.Add( 'ScoreboardShow', 'AMB.UI.MainMenu.ShowMenu',  function() AMB.UI.MainMenu.ShowMenu( CvarInt( 'page_tab' ) ) return false end )
         hook.Add( 'ScoreboardHide', 'AMB.UI.MainMenu.CloseMenu', function() AMB.UI.MainMenu.CloseMenu() return false end )
 
     else
@@ -70,31 +80,37 @@ end
 
 function AMB.UI.MainMenu.ShowMenu( nPage )
 
-    if ValidPanel( AMB.UI.MainMenu.menu ) then return end
+    if ValidPanel( AMB.UI.MainMenu.menu ) then AMB.UI.MainMenu.CloseMenu() return end
 
-    local EnableSaveCursor  = CvarBool( 'amb_mm_cursor_save' )
+    local EnableSaveCursor  = CvarBool( 'cursor_save' )
     if EnableSaveCursor and cursor_x then input.SetCursorPos( cursor_x, cursor_y ) end
+    local GetDefaultPageTAB = CvarInt( 'page_tab' )
+    local GetDefaultPageF4  = CvarInt( 'page_f4' )
+    local EnableSavePage    = CvarBool( 'page_save' )
+    local GetNavbarPos      = CvarString( 'navbar_pos' )
 
-    local GetDefaultPageTAB = CvarInt( 'amb_mm_page_tab' )
-    local GetDefaultPageF4  = CvarInt( 'amb_mm_page_f4' )
-    local EnableSavePage    = CvarBool( 'amb_mm_page_saves_on_close' )
-
-    local GetNavbarPos      = CvarString( 'amb_mm_navbar_pos' )
-
+    local blur = CvarBool( 'blur' )
     local background = AMB.UI.GUI.DrawPanel( nil, w, h, 0, 0, function( self, w, h )
     
-        if CvarBool( 'amb_mm_blur' ) then AMB.UI.DrawBlur( self, 1 ) end
+        if blur then AMB.UI.DrawBlur( self, 1 ) end
         
     end )
 
+    local nabvar_color0 = GetColor( 'navbar_color0' )
     local menu = AMB.UI.GUI.DrawFrame( nil, background:GetWide(), background:GetTall(), 0, 0, nil, true, false, false, function( self, w, h ) 
     
-        draw.RoundedBox( 0, 0, 0, w, h, GetColor( 'amb_mm_navbar_color0' )  ) 
+        draw.RoundedBox( 0, 0, 0, w, h, nabvar_color0  ) 
         
     end )
     menu.OnKeyCodePressed = function( self, nKey )
 
         if ( nKey == KEY_F4 ) then AMB.UI.MainMenu.CloseMenu() end
+        if ( nKey == KEY_ESCAPE ) then 
+
+            gui.HideGameUI()
+            AMB.UI.MainMenu.CloseMenu()
+
+        end
 
     end
     menu:SetAlpha( 0 )
@@ -102,19 +118,17 @@ function AMB.UI.MainMenu.ShowMenu( nPage )
     
     local navbar_x, navbar_y = GetPos( 'navbar' )
     local navbar_w, navbar_h = GetSize( 'navbar' )
-
+    local navbar_color1 = GetColor( 'navbar_color1' )
     local navbar = AMB.UI.GUI.DrawPanel( menu, navbar_w, 0, navbar_x, navbar_y, function( self, w, h ) 
 
-        draw.RoundedBox( 0, 0, 0, w, 2, GetColor( 'amb_mm_navbar_color2' ) )
-        draw.RoundedBox( 0, 0, 2, w, h - 4, GetColor( 'amb_mm_navbar_color1' ) )
-        draw.RoundedBox( 0, 0, h - 4, w, 2, GetColor( 'amb_mm_navbar_color2' ) )
+        draw.RoundedBox( 0, 0, 0, w, h, navbar_color1 )
 
     end )
 
     navbar:SizeTo( navbar_w, navbar_h, 0.25, 0, -1, function() end )
 
     local button_w = 128
-    local margin_x = 2
+    local margin_x = 4
 
     local canvas = AMB.UI.GUI.DrawPanel( menu, w, h - navbar:GetTall(), 0, navbar_h, function( self, w, h ) end )
 
@@ -124,6 +138,7 @@ function AMB.UI.MainMenu.ShowMenu( nPage )
         
     end
 
+    local navbar_color3 = GetColor( 'navbar_color3' )
     for id, page in ipairs( AMB.UI.MainMenu.Config.pages ) do
 
         local page_button = AMB.UI.GUI.DrawButton( navbar, button_w, navbar_h - 8, margin_x + ( button_w + margin_x ) * ( id - 1 ), 4, nil, nil, nil, function()
@@ -132,7 +147,7 @@ function AMB.UI.MainMenu.ShowMenu( nPage )
 
         end, function( self, w, h ) 
 
-            draw.RoundedBox( 4, 0, 0, w, h, GetColor( 'amb_mm_navbar_color3' ) )
+            draw.RoundedBox( 4, 0, 0, w, h, navbar_color3 )
             draw.SimpleTextOutlined( utf8.sub( page.name, 1, 13 ), self.size_font..' Ambition Bold', w / 2, h / 2, page.color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, C.ABS_BLACK )
 
         end )
@@ -142,7 +157,7 @@ function AMB.UI.MainMenu.ShowMenu( nPage )
 
             surface.PlaySound( SND.RELEASE_BUTTON )
 
-            page_button.size_font = 20
+            page_button.size_font = 22
 
         end, function()
 
@@ -164,6 +179,9 @@ function AMB.UI.MainMenu.CloseMenu()
 
     if not ValidPanel( AMB.UI.MainMenu.menu ) then return end
 
+    local EnableSavePage    = CvarBool( 'page_save' )
+
+    if not EnableSavePage then AMB.UI.MainMenu.Pages.ClearPages() end
     AMB.UI.MainMenu.Pages.ClearCurrentPages()
     
     cursor_x, cursor_y = input.GetCursorPos()
@@ -180,13 +198,11 @@ end
 
 net.Receive( CFG.net_f4, function()
 
-    if not ValidPanel( AMB.UI.MainMenu.menu ) then AMB.UI.MainMenu.ShowMenu( CvarInt( 'amb_mm_page_f4' ) ) return end
-
-    AMB.UI.MainMenu.CloseMenu()
+    AMB.UI.MainMenu.ShowMenu( CvarInt( 'page_f4' ) )
 
 end )
 
-cvars.AddChangeCallback( 'amb_mm_page_tab', function() 
+cvars.AddChangeCallback( 'page_tab', function() 
 
     if AMB.UI.MainMenu.Config.enable then AMB.UI.MainMenu.EnableLibrary( true ) end
 
