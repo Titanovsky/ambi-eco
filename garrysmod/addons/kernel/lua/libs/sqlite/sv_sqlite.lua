@@ -66,7 +66,9 @@ function AMB.SQL.SelectAll( sTable )
 
     if not sql.TableExists( sTable ) then AMB.ErrorLog( 'SQL', 'Dosent SELECT ALL the table '..sTable ) return false end
 
-    return sql.Query( "SELECT * FROM "..sTable ) 
+    local db = sql.Query( "SELECT * FROM "..sTable )
+
+    return db and db or false
 
 end
 
@@ -113,9 +115,11 @@ function AMB.SQL.Update( sTable, sKey, anyValue, sIDKey, anyIDValue )
 
     sql.Query( "UPDATE "..sTable.." SET "..sKey.."="..anyValue.." WHERE "..sIDKey.."="..anyIDValue )
 
+    return true
+
 end
 
-function AMB.SQL.Update2( sTable, sKey, anyValue, sIDKey, anyIDValue, sIDKey2, anyIDValue2 )
+function AMB.SQL.UpdateDouble( sTable, sKey, anyValue, sIDKey, anyIDValue, sIDKey2, anyIDValue2 )
 
     if isstring( anyValue ) then anyValue = AMB.SQL.Str( anyValue ) end
     if isstring( anyIDValue ) then anyIDValue = AMB.SQL.Str( anyIDValue ) end
@@ -124,6 +128,8 @@ function AMB.SQL.Update2( sTable, sKey, anyValue, sIDKey, anyIDValue, sIDKey2, a
     if not sql.TableExists( sTable ) then AMB.ErrorLog( 'SQL', 'Dosent UPDATE2 in the table '..sTable ) return false end
 
     sql.Query( "UPDATE "..sTable.." SET "..sKey.."="..anyValue.." WHERE "..sIDKey.."="..anyIDValue.." AND "..sIDKey2..'='..anyIDValue2 )
+
+    return true
 
 end
 
@@ -134,6 +140,8 @@ function AMB.SQL.UpdateAll( sTable, sKey, anyValue )
     if not sql.TableExists( sTable ) then AMB.ErrorLog( 'SQL', 'Dosent UPDATE ALL the table '..sTable ) return false end
 
     sql.Query( "UPDATE "..sTable.." SET "..sKey.."="..anyValue )
+
+    return true
 
 end
 

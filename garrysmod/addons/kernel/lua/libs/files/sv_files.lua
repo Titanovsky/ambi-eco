@@ -1,143 +1,75 @@
 AMB.Files = AMB.Files or {}
-AMB.Files.global_dir = 'ambition/'
+AMB.Files.global_dir = 'ambition/'..AMB.Config.server_dir..'/'
 
 file = file
-util = util
 
-local DATA = 'DATA'
-
-function AMB.Files.CreateDir( sName, bOutFolderAmbition )
+function AMB.Files.Create( sName, sContent, bOutFolderAmbition )
 
     local path = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
-    
-    file.CreateDir( path )
-    AMB.ConsoleLog( 'Created the Folder: '..path )
-
-    return true
-
-end
-
-function AMB.Files.CreateFolder( sName, bOutFolderAmbition )
-
-    AMB.Files.CreateDir( sName, bOutFolderAmbition )
-
-end
-
-function AMB.Files.CreateFile( sName, sContent, bOutFolderAmbition )
-
-    local path = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
-    local is_file = file.Exists( path, DATA )
-
-    print( path )
 
     file.Write( path, sContent )
 
-    if is_file then 
+    return true
 
-        AMB.ConsoleLog( 'Rewrite the File: '..path )
+end
 
-    else
+function AMB.Files.CreateSafe( sName, sContent, bOutFolderAmbition )
 
-        AMB.ConsoleLog( 'Created the File: '..path )
+    local path = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
+    local file_valid = AMB.Files.Valid( path, 'DATA', true )
 
-    end
+    if file_valid then return false end
+
+    file.Write( path, sContent )
 
     return true
 
 end
 
-function AMB.Files.CreateNewFile( sName, sContent, bOutFolderAmbition )
+function AMB.Files.Remove( sName, bOutFolderAmbition )
 
-    local path = bOutFolderAmbition and AMB.Files.global_dir..sName or sName
-    local is_file = AMB.Files.Valid( path )
-
-    if is_file then 
-
-        AMB.ErrorLog( 'File | Cannot create the new file '..path..', cuz he is valid' )
-
-        return false
-
-    else
-
-        file.Write( path, sContent )
-        AMB.ConsoleLog( 'Created the new File: '..path )
-
-        return true
-
-    end
-
-end
-
-function AMB.Files.Remove( sName )
+    sName = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
 
     file.Delete( sName )
 
-    AMB.ConsoleLog( 'Deleted File/Folder in: '..sName )
-
 end
 
-function AMB.Files.Valid( sName, sPattern )
+function AMB.Files.Valid( sName, sPattern, bOutFolderAmbition )
 
-    sPattern = sPattern or DATA
+    sPattern = sPattern or 'DATA'
+    sName = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
 
-    if ( file.Size( sName, sPattern ) >= 2 ) then return true end
+    if ( file.Size( sName, sPattern ) >= 1 ) then return true end
 
     return false
 
 end
 
-function AMB.Files.FindFiles( sName, sPattern, sSorting, bOutFolderAmbition )
+function AMB.Files.Find( sName, sPattern, sSorting, bOutFolderAmbition )
 
-    sPattern = sPattern or DATA
+    sPattern = sPattern or 'DATA'
+    sName = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
 
-    local path = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
-
-    local files, _ = file.Find( path, sPattern, sSorting )
+    local files, _ = file.Find( sName, sPattern, sSorting )
 
     return files
 
 end
 
-function AMB.Files.FindFolders( sName, sPattern, sSorting, bOutFolderAmbition )
+function AMB.Files.Read( sName, sPattern, bOutFolderAmbition )
 
-    sPattern = sPattern or DATA
-
-    local path = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
-
-    local _, folders = file.Find( path, sPattern, sSorting )
-
-    return folders
+    sPattern = sPattern or 'DATA'
+    sName = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
+    
+    return file.Read( sName, sPattern )
 
 end
 
-function AMB.Files.CreateGlobalFolder()
+function AMB.Files.GetSize( sName, sPattern, bOutFolderAmbition )
 
-    if not file.IsDir( 'ambition/', DATA ) then AMB.Files.CreateDir( 'ambition', true ) end
+    sPattern = sPattern or 'DATA'
+    sName = bOutFolderAmbition and sName or AMB.Files.global_dir..sName
 
-end
-AMB.Files.CreateGlobalFolder()
-
-function AMB.Files.CreateServerFolder()
-
-    if not file.IsDir( 'ambition/'..AMB.Config.server_dir, DATA ) then AMB.Files.CreateDir( 'ambition/'..AMB.Config.server_dir, true ) end
-
-end
-AMB.Files.CreateServerFolder()
-
-function AMB.Files.InJSON( tData, bPrint )
-
-    bPrint = bPrint or false
-
-    local data_str = util.TableToJSON( tData, bPrint )
-
-    return data_str
-
-end
-
-function AMB.Files.OutJSON( sJSON )
-
-    local data_tab = util.JSONToTable( sJSON )
-
-    return data_tab
+    return file.Size( sName, sPattern )
 
 end

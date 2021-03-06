@@ -64,25 +64,24 @@ AMB.G.C.RU_BLUE   = rgb(99, 205, 218) -- squeaky
 
 -- ## ENT ######################
 
-AMB.G.CATEGORIES = AMB.G.CATEGORIES or {
-
-    [ 'Dev' ] = 1,
-    [ 'Other' ] = 2,
-    [ 'Basewars NPC' ] = 3,
-    [ 'Basewars Ents' ] = 4
-
-}
+AMB.G.CATEGORIES = AMB.G.CATEGORIES or {}
 
 AMB.G.AUTHOR    = 'Ambition'
 AMB.G.RENDER    = RENDERGROUP_BOTH
 
 function AMB.G.Category( sName )
 
-    if AMB.G.CATEGORIES[ sName ] then return AMB.G.CATEGORIES[ sName ]..'. '..sName end 
+    for id, name in ipairs( AMB.G.CATEGORIES ) do
 
-    AMB.G.CATEGORIES[ sName ] = #AMB.G.CATEGORIES+1 
+        if ( name == sName ) then return id..'. '..name end
 
-    return AMB.G.CATEGORIES[ sName ]..'. '..sName
+    end
+
+    local ID = #AMB.G.CATEGORIES + 1
+
+    AMB.G.CATEGORIES[ ID  ] = sName
+
+    return ID..'. '..sName
 
 end
 

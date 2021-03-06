@@ -1,7 +1,7 @@
 AMB.UI = AMB.UI or {}
 AMB.UI.Chat = AMB.UI.Chat or {}
 
-local net_string = AMB.Network.AddString( 'ambChatSendMessage' )
+local net_string = AMB.Network.AddString( 'AmbChatSendMessage' )
 
 function AMB.UI.Chat.SendMessage( ePly, sSound, ... )
 

@@ -12,7 +12,6 @@ local COLOR_PANEL = Color( 20, 20, 20, 200 )
 local COLOR_FIRST_PANEL = Color( 20, 20, 20, 150 )
 local CVar = GetConVar
 
-
 local custom_vars = { 
 
     [ 'main' ] = { 

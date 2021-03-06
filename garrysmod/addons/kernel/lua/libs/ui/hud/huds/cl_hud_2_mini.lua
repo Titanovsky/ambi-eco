@@ -4,7 +4,7 @@ local C = AMB.G.C
 
 local COLOR_PANEL = Color( 20, 20, 20, 200 )
 
-AMB.UI.HUD.RegisterHUD( 2, 'Minimalistic HUD', '[ Ambition ]', function()
+AMB.UI.HUD.RegisterHUD( 2, 'Minimalistic HUD', 'AMBITION', function()
 
     surface.SetFont( '28 Ambition' )
     local xchar_nick, _ = surface.GetTextSize( '['..LocalPlayer():EntIndex()..']'..' '..LocalPlayer():Nick() )
