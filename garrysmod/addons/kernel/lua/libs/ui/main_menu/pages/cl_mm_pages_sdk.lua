@@ -109,8 +109,8 @@ function AMB.UI.MainMenu.Pages.ClosePage( nPage, vguiFrame )
 
     local page = AMB.UI.MainMenu.Config.pages[ nPage ]
 
-    if not page then return end
-    if not ValidPanel( vguiFrame ) then return end
+    if not page then print('sda') return end
+    if not ValidPanel( vguiFrame ) then print('asd') return end
 
     current_pages[ nPage ] = false
     pages[ nPage ] = false

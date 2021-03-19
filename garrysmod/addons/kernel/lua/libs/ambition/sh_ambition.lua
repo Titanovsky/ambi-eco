@@ -23,16 +23,17 @@ end
 
 AMB.console_logs = AMB.console_logs or {}
 
-function AMB.ConsoleLog( sHeader, sText )
+function AMB.ConsoleLog( sHeader, sText, cColorText )
 
     if ( AMB.Config.logs == false ) then return end
 
     sHeader = sHeader or '*'
     sText = sText or 'Something'
+    cColorText = cColorText or AMB.G.C.AMB_LOG
 
-    AMB.console_logs[ #AMB.console_logs+1 ] = { type = 'ConsoleLog', text = sHeader..' | '..sText, date = os.date( '%c', os.time() ) }
+    AMB.console_logs[ #AMB.console_logs+1 ] = { type = 'ConsoleLog', text = sHeader..' | '..sText, color = cColorText, date = os.date( '%c', os.time() ) }
 
-    MsgC( AMB.G.C.AMB_LOG, '## [LOG]', AMB.G.C.AMB_GRAY, ' | '..sHeader..' | ', AMB.G.C.AMB_WHITE, sText, AMB.G.C.AMB_LOG, ' \t##\n' )
+    MsgC( cColorText, '# [LOG]', AMB.G.C.AMB_GRAY, ' | '..sHeader..' | ', AMB.G.C.AMB_WHITE, sText, cColorText, ' #\n' )
 
 end
 
@@ -43,7 +44,8 @@ function AMB.WarningLog( sHeader, sText )
 
     AMB.console_logs[ #AMB.console_logs+1 ] = { type = 'Warning', text = sHeader..' | '..sText, date = os.date( '%c', os.time() ) }
 
-    MsgC( AMB.G.C.AMB_SOFT_YELLOW, '## [WARNING]', AMB.G.C.AMB_GRAY, ' | '..sHeader..' | ', AMB.G.C.AMB_WHITE, sText, AMB.G.C.AMB_SOFT_YELLOW, ' \t##\n' )
+    MsgC( AMB.G.C.AMB_SOFT_YELLOW, '# [WARNING]', AMB.G.C.AMB_GRAY, ' | '..sHeader..' | ', AMB.G.C.AMB_WHITE, sText, AMB.G.C.AMB_SOFT_YELLOW, ' #\n' )
+    print( debug.traceback() )
 
 end
 
@@ -54,7 +56,7 @@ function AMB.ErrorLog( sHeader, sText )
 
     AMB.console_logs[ #AMB.console_logs+1 ] = { type = 'Error', text = sHeader..' | '..sText, date = os.date( '%c', os.time() ) }
 
-    MsgC( AMB.G.C.AMB_ERROR, '## [ERROR]', AMB.G.C.AMB_GRAY, ' | '..sHeader..' | ', AMB.G.C.AMB_WHITE, sText..'!', AMB.G.C.AMB_ERROR, ' \t##\n' )
+    MsgC( AMB.G.C.AMB_ERROR, '# [ERROR]', AMB.G.C.AMB_GRAY, ' | '..sHeader..' | ', AMB.G.C.AMB_WHITE, sText..'!', AMB.G.C.AMB_ERROR, ' #\n' )
     print( debug.traceback() )
 
 end

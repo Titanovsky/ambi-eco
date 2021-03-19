@@ -28,13 +28,10 @@ function AMB.Entities.Physics( eObj, nMoveType, nPhysicInit, nCollisionGroup, bE
     nMoveType = nMoveType or MOVETYPE_VPHYSICS
     nPhysicInit = nPhysicInit or SOLID_VPHYSICS
     nCollisionGroup = nCollisionGroup or COLLISION_GROUP_NONE
-    bEnableMotion = bEnableMotion or true
 
     eObj:SetMoveType( nMoveType )
     eObj:PhysicsInit( nPhysicInit )
     eObj:SetCollisionGroup( nCollisionGroup )
-
-    if not bEnableMotion then return phys end
 
     local phys = eObj:GetPhysicsObject()
     if IsValid( phys ) then 

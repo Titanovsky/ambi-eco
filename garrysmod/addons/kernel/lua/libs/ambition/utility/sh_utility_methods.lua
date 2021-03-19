@@ -45,3 +45,25 @@ function AMB.Utility.StringIsNullOrWhitespaces( sString )
     return true
 
 end
+
+function AMB.Utility.GetTextSizeX( sText, sFont )
+
+    if not CLIENT then return end
+
+    surface.SetFont( sFont )
+    local x, _ = surface.GetTextSize( sText )
+
+    return x
+
+end
+
+function AMB.Utility.GetTextSizeY( sText, sFont )
+
+    if not CLIENT then return end
+
+    surface.SetFont( sFont )
+    local _, y = surface.GetTextSize( sText )
+
+    return y
+
+end
