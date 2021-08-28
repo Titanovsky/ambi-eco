@@ -1,1 +1,0 @@
-AMB.UI.HUD.RegisterHUD( 0, 'NoDraw', 'AMBITION', function() end )
