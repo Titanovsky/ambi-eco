@@ -6,7 +6,9 @@ local C = AMB.Ambition.Global.Colors
 local W, H = ScrW(), ScrH()
 local surface, draw, math, string, Material, FrameTime, Matrix, SysTime, ipairs = surface, draw, math, string, Material, FrameTime, Matrix, SysTime, ipairs
 local Explode = string.Explode
-local SimpTextOutl, SimpText, DrawPoly, DrawLine, SetFont, GetTextSize, SetMaterial, SetDrawColor, DrawTexturedRect, DrawRect, DrawText, SetTextPos, RoundedBoxEx, SetTextColor = draw.SimpleTextOutlined, draw.SimpleText, surface.DrawPoly, surface.DrawLine, surface.SetFont, surface.GetTextSize, surface.SetMaterial, surface.SetDrawColor, surface.DrawTexturedRect, surface.DrawRect, draw.RoundedBoxEx, surface.DrawText, surface.SetTextPos, surface.SetTextColor
+local SimpTextOutl, SimpText, RoundedBoxEx = draw.SimpleTextOutlined, draw.SimpleText, draw.RoundedBoxEx
+local DrawPoly, DrawLine, DrawTexturedRect, DrawRect, DrawText = surface.DrawPoly, surface.DrawLine, surface.DrawTexturedRect, surface.DrawText
+local SetFont, GetTextSize, SetMaterial, SetDrawColor, SetTextPos = surface.SetFont, surface.GetTextSize, surface.SetMaterial, surface.SetDrawColor, surface.SetTextPos
 local Min, Max, Cos, Sin, Rad, PI = math.min, math.max, math.cos, math.sin, math.rad, math.pi
 local SetMetaTable = setmetatable
 local TimerCreate = timer.Create
@@ -25,6 +27,7 @@ function AMB.UI.Draw.GetTextSize( sFont, sText )
     if ( cache_sizes[ sFont ] == nil ) then cache_sizes[ sFont ] = {} end
 
     if ( cache_sizes[ sFont ][ sText ] == nil ) then
+        SetFont( sFont )
         local w, h = GetTextSize( sText )
         cache_sizes[ sFont ][ sText ] = {
             w = w,
@@ -145,7 +148,7 @@ function AMB.UI.Draw.Text( xPos, yPos, sText, sFont, cColor, anyAlign, nOutlineW
     local tab = Explode( '\n', sText or '' )
     for i = 1, #tab do
         local str = tab[ i ]
-        local y_offset = UT.GetTextSizeY( str, font )
+        local y_offset = AMB.UI.Draw.GetTextSizeY( font, str ) or 0
         Draw( str, font, xPos or 0, y + ( y_offset - 8 ) * ( i - 1 ), cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 1, cColorOutline or C.ABS_BLACK ) 
     end
 end
