@@ -1,5 +1,5 @@
 Ambi = Ambi or {}
-Ambi.version = '5.0.0'
+Ambi.version = '5.0.1'
 
 AMB = setmetatable( AMB or {}, { __index = Ambi } )-- для совместимости
 
