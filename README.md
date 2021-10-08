@@ -62,7 +62,7 @@ Ambi Eco – это платформа (экосистема) по контро�
 
  ## Links
  * [Documentation](https://app.gitbook.com/@titanovskyteam/s/ambi-eco/)
- * [Roadmap](https://trello.com/b/lIXpnz0s/ambi-eco-roadmap) — Roadmap of the Ambi Eco
+ * [Roadmap](https://trello.com/b/lIXpnz0s/ambi-eco-roadmap)
  * [Lab Opti](https://t.me/joinchat/9yzHx5ANTn0wYTM6) - Мой личный телеграмм, где я в том числе веду разработку экосистемы (#ambi_eco)
  * [Ambi Steam](https://steamcommunity.com/groups/ambiteam) - AMBI TEAM (Steam)
  * [Ambi VK](https://vk.com/ambi_team) - AMBI TEAM (VK)
