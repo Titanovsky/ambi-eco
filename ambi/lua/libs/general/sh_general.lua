@@ -36,11 +36,11 @@ end
 local consolecmds = {}
 function Ambi.General.AddConsoleCommand( sCommand, fCallback, fAutoComplete, sHelpText, nFlags )
     sCommand = sCommand or 'test'
-    local cmd = bOnlyServer and 'ambi_'..Ambi.Config.prefix..'_'..sCommand or 'ambi_'..sCommand
+    local cmd = 'ambi_'..sCommand
 
     consolecmds[ sCommand ] = { command = cmd, only_server = bOnlyServer, callback = fCallback, help = sHelpText, flags = nFlags }
 
-    return concommand.Add( cmd, fCallback, fAutoComplete, sHelpText or 'Ambition' )
+    return concommand.Add( cmd, fCallback, fAutoComplete, sHelpText )
 end
 
 function Ambi.General.GetConsoleCommands()
@@ -56,12 +56,12 @@ function Ambi.General.Warning( sHeader, sMessage )
     if not red then
         local C = Ambi.General.Global.Colors
 
-        red = C.AMB_ERROR
+        red = C.ERROR
         green = C.FLAT_GREEN
         blue = C.FLAT_BLUE
-        yellow = C.AMB_YELLOW
+        yellow = C.AMBI_YELLOW
         white = C.ABS_WHITE
-        gray = C.AMB_GRAY
+        gray = C.AMBI_GRAY
     end
 
     sHeader = sHeader or 'Header'
@@ -87,12 +87,12 @@ function Ambi.General.Error( sHeader, sMessage )
     if not red then
         local C = Ambi.General.Global.Colors
 
-        red = C.AMB_ERROR
+        red = C.ERROR
         green = C.FLAT_GREEN
         blue = C.FLAT_BLUE
-        yellow = C.AMB_YELLOW
+        yellow = C.AMBI_YELLOW
         white = C.ABS_WHITE
-        gray = C.AMB_GRAY
+        gray = C.AMBI_GRAY
     end
 
     sHeader = sHeader or 'Header'

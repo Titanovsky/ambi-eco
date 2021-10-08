@@ -195,14 +195,16 @@ if ( FileExists( '[ambi]/'..CFG.directory, 'DATA' ) == false ) then FileDirCreat
 ----------------------------------------------------------------------------------------------------
 
 print( '\n==================================' )
-print( '|| \tAmbi Eco v'..Ambi.Config.version..' \t||' )
+print( '|| \tAmbi Eco v'..Ambi.version..' \t||' )
 print( '==================================\n' )
 
-local C = Ambi.General.Global.Colors
-http.Fetch( 'https://raw.githubusercontent.com/Titanovsky/ambi-eco/master/VERSION.md', function( sBody )
-    if ( Ambi.version ~= sBody ) then
-        for i = 1, 20 do 
-            MsgC( C.ERROR, '|| [Ambi Eco] ||', C.ABS_WHITE, ' PLEASE, UPDATE NEW VERSION: ', C.AMBI_GREEN, sBody )
+timer.Simple( 2, function()
+    local C = Ambi.General.Global.Colors
+    http.Fetch( 'https://raw.githubusercontent.com/Titanovsky/ambi-eco/master/VERSION.md', function( sBody )
+        if ( Ambi.version ~= sBody ) then
+            for i = 1, 32 do 
+                MsgC( C.ERROR, '|| [Ambi Eco] ||', C.ABS_WHITE, ' PLEASE, UPDATE NEW VERSION: ', C.AMBI_GREEN, sBody )
+            end
         end
-    end
+    end )
 end )
