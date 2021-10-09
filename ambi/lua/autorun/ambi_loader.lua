@@ -203,8 +203,9 @@ timer.Simple( 2, function()
     http.Fetch( 'https://raw.githubusercontent.com/Titanovsky/ambi-eco/master/VERSION.md', function( sBody )
         if ( Ambi.version ~= sBody ) then
             for i = 1, 32 do 
-                MsgC( C.ERROR, '|| [Ambi Eco] ||', C.ABS_WHITE, ' PLEASE, UPDATE NEW VERSION: ', C.AMBI_GREEN, sBody )
+                MsgC( C.ERROR, '\n|| [Ambi Eco] ||', C.ABS_WHITE, ' PLEASE, UPDATE NEW VERSION: ', C.AMBI_GREEN, sBody )
             end
+            print( '\n' )
         end
     end )
 end )
