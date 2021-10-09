@@ -1,3 +1,4 @@
+local tostring, isstring, isnumber, isbool, isvector, isangle, isentity = tostring, isstring, isnumber, isbool, isvector, isangle, isentity
 local PLAYER = FindMetaTable( 'Player' )
 
 if SERVER then
@@ -7,8 +8,15 @@ if SERVER then
         --if not value then return end
         local _key = tostring( key or '' )
 
-        if string.StartWith( _key, 'nw_' ) then 
-            if isnumber( value ) then self:SetNWInt( _key, value ) end
+        if ( #_key > 3 ) and ( _key[ 1 ] == 'n' ) and ( _key[ 2 ] == 'w' ) and ( _key[ 3 ] == '_' ) then 
+            if isstring( value ) then self:SetNWString( _key, value ) end
+            if isnumber( value ) then 
+                if ( value % 1 == 0 ) then self:SetNWInt( _key, value ) else self:SetNWFloat( _key, value ) end
+            end
+            if isbool( value ) then self:SetNWBool( _key, value ) end
+            if isvector( value ) then self:SetNWVector( _key, value ) end
+            if isangle( value ) then self:SetNWAngle( _key, value ) end
+            if isentity( value ) then self:SetNWEntity( _key, value ) end
         end
 
         oldnewindex( self, key, value )
