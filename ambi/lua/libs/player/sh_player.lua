@@ -5,7 +5,7 @@ setmetatable( Ambi.Player, { __index = PLAYER } )
 
 -- -------------------------------------------------------------------------------------
 local Random = Ambi.General.Utility.Random
-local util, tostring, IsValid = util, tostring, IsValid
+local util, tostring, IsValid, team = util, tostring, IsValid, team
 local TimerCreate, TimerRemove = timer.Create, timer.Remove
 -- -------------------------------------------------------------------------------------
 
@@ -86,4 +86,21 @@ function PLAYER:GetTimers()
 	if not Ambi.Player.times[ sid ] then Ambi.Player.times[ sid ] = {} end
 
 	return Ambi.Player.times[ sid ]
+end
+
+-- -------------------------------------------------------------------------------------
+function PLAYER:TeamName()
+	return team.GetName( self:Team() )
+end
+
+function PLAYER:TeamColor()
+	return team.GetColor( self:Team() )
+end
+
+function PLAYER:TeamClass()
+	return team.GetClass( self:Team() )
+end
+
+function PLAYER:TeamScore()
+	return team.GetScore( self:Team() )
 end

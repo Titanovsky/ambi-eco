@@ -154,6 +154,13 @@ function Ambi.UI.Draw.Text( xPos, yPos, sText, sFont, cColor, anyAlign, nOutline
     end
 end
 
+function Ambi.UI.Draw.SimpleText( xPos, yPos, sText, sFont, cColor, anyAlign, nOutlineWeight, cColorOutline )
+    local Draw = ( ( nOutlineWeight or 0 ) > 0 ) and SimpTextOutl or SimpText
+    local font, align = sFont or 'Default', ALIGN_PATTERNS[ anyAlign or 0 ] or ALIGN_PATTERNS[ 0 ]
+
+    SimpTextOutl( sText, font, xPos or 0, yPos or 0, cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 0, cColorOutline or C.ABS_BLACK ) 
+end
+
 local DEFAULT_MAT = Material( '' )
 function Ambi.UI.Draw.Material( wSize, hSize, xPos, yPos, matImage, cColor )
     SetMaterial( matImage or DEFAULT_MAT )
@@ -161,8 +168,8 @@ function Ambi.UI.Draw.Material( wSize, hSize, xPos, yPos, matImage, cColor )
 	DrawTexturedRect( xPos or 0, yPos or 0, wSize or 0, hSize or 0 )
 end
 
-function Ambi.UI.Draw.Line( xPosStart, yPosStart, xPosEnd, yPosEnd, nColorRed, nColorGreen, nColorBlue, nColorAlpha )
-    SetDrawColor( nColorRed or 255, nColorGreen or 255, nColorBlue or 255, nColorAlpha or 255 )
+function Ambi.UI.Draw.Line( xPosStart, yPosStart, xPosEnd, yPosEnd, cColor )
+    SetDrawColor( cColor and cColor.r or 255, cColor and cColor.g or 255, cColor and cColor.b or 255, cColor and cColor.a or 255 )
     DrawLine( xPosStart or 0, yPosStart or 0, xPosEnd or 0, yPosEnd or 0 )
 end
 
@@ -187,7 +194,7 @@ end
 -- -------------------------------------------------------------------------------------
 
 -- by TechoHUD
-function Ambi.UI.Draw.ObliqueRect( xPos, yPos, wSize, hSize, cColor, bReverse, imaterialTexture )
+function Ambi.UI.Draw.ObliqueRect( xPos, yPos, wSize, hSize, cColor, bReverse, matTexture )
     -- https://steamcommunity.com/sharedfiles/filedetails/?id=1120612949
 	local rect = {}
 
@@ -204,12 +211,12 @@ function Ambi.UI.Draw.ObliqueRect( xPos, yPos, wSize, hSize, cColor, bReverse, i
     end
 
     surface.SetDrawColor( cColor:Unpack() )
-    if imaterialTexture then surface.SetMaterial( imaterialTexture ) else draw.NoTexture() end
+    if matTexture then surface.SetMaterial( matTexture ) else draw.NoTexture() end
     surface.DrawPoly( rect )
 end
 
 -- by Kruzgi
-function Ambi.UI.Draw.CircleKruzgi( xPos1, yPos1, wSize, hSize, cColor, aAngle, xPos2, yPos2, imaterialTexture )
+function Ambi.UI.Draw.CircleKruzgi( xPos1, yPos1, wSize, hSize, cColor, aAngle, xPos2, yPos2, matTexture )
     -- https://github.com/kruzgi/Garrys-Mod-Draw-Circle/blob/master/draw_circle.lua
     for i = 0, aAngle do
         local c = math.cos( math.rad( i ) )
@@ -218,7 +225,7 @@ function Ambi.UI.Draw.CircleKruzgi( xPos1, yPos1, wSize, hSize, cColor, aAngle, 
         local newy = yPos2 * c + xPos2 * s
 
         surface.SetDrawColor( cColor )
-        if imaterialTexture then surface.SetMaterial( imaterialTexture ) else draw.NoTexture() end
+        if matTexture then surface.SetMaterial( matTexture ) else draw.NoTexture() end
         surface.DrawTexturedRectRotated( xPos1 + newx, yPos1 + newy, wSize, hSize, i )
     end
 end
@@ -379,8 +386,8 @@ function Ambi.UI.Draw.BlurResample( nAmount )
 	SetMaterial( BLUR )
 
 	for i = 1, 3 do
-		blur:SetFloat( '$blur', ( i / 3 ) * ( nAmount or 8 ) )
-		blur:Recompute()
+		BLUR:SetFloat( '$blur', ( i / 3 ) * ( nAmount or 8 ) )
+		BLUR:Recompute()
 		UpdateScreenEffectTexture()
 
 		for k, v in ipairs( blurboxes ) do

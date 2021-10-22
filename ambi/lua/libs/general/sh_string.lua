@@ -10,6 +10,87 @@ local Random = math.random
 local rshift, band = bit.rshift, bit.band
 -- -------------------------------------------------------------------------------------
 
+RUSSIAN_CHARS_UPPER = {
+	[ 'ё' ] = 'Ё',
+	[ 'й' ] = 'Й',
+	[ 'ц' ] = 'Ц',
+	[ 'у' ] = 'У',
+	[ 'к' ] = 'К',
+	[ 'е' ] = 'Е',
+	[ 'н' ] = 'Н',
+	[ 'г' ] = 'Г',
+	[ 'ш' ] = 'Ш',
+	[ 'щ' ] = 'Щ',
+	[ 'з' ] = 'З',
+	[ 'х' ] = 'Х',
+	[ 'ъ' ] = 'Ъ',
+	[ 'ф' ] = 'Ф',
+	[ 'ы' ] = 'Ы',
+	[ 'в' ] = 'В',
+	[ 'а' ] = 'А',
+	[ 'п' ] = 'П',
+	[ 'р' ] = 'Р',
+	[ 'о' ] = 'О',
+	[ 'л' ] = 'Л',
+	[ 'д' ] = 'Д',
+	[ 'ж' ] = 'Ж',
+	[ 'э' ] = 'Э',
+	[ 'я' ] = 'Я',
+	[ 'ч' ] = 'Ч',
+	[ 'с' ] = 'С',
+	[ 'м' ] = 'М',
+	[ 'и' ] = 'И',
+	[ 'т' ] = 'Т',
+	[ 'ь' ] = 'Ь',
+	[ 'б' ] = 'Б',
+	[ 'ю' ] = 'Ю',
+}
+
+RUSSIAN_CHARS_LOWER = {}
+for low_char, up_char in pairs( RUSSIAN_CHARS_UPPER ) do
+	RUSSIAN_CHARS_LOWER[ up_char ] = low_char
+end
+
+local Lower = string.lower
+function string.ForceLower( sString )
+	local str = ''
+	local len = utf8.len( sString )
+	if ( len == 1 ) then return Lower( RUSSIAN_CHARS_LOWER[ sString ] or sString ) end
+
+	for i = 1, len do
+		local char = utf8.GetChar( sString, i )
+		local reverse = RUSSIAN_CHARS_LOWER[ char ]
+		if reverse then str = str..reverse else str = str..char  end
+	end
+
+	return Lower( str )
+end
+
+local Upper = string.upper
+function string.ForceUpper( sString )
+	local str = ''
+	local len = utf8.len( sString )
+	if ( len == 1 ) then return Upper( RUSSIAN_CHARS_UPPER[ sString ] or sString ) end
+
+	for i = 1, len do
+		local char = utf8.GetChar( sString, i )
+		local reverse = RUSSIAN_CHARS_UPPER[ char ]
+		if reverse then str = str..reverse else str = str..char  end
+	end
+
+	return Upper( str )
+end
+
+function string.IsRussianUpChar( sChar )
+	return tobool( RUSSIAN_CHARS_LOWER[ sChar ] )
+end
+
+function string.IsRussianLowerChar( sChar )
+	return tobool( RUSSIAN_CHARS_UPPER[ sChar ] )
+end
+
+-- -------------------------------------------------------------------------------------
+
 function string.IsValid( sString )
     if not sString or not isstring( sString ) then return false end
 

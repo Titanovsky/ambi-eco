@@ -6,22 +6,20 @@ local IsValid, istable, isnumber, net, FindMetaTable = IsValid, istable, isnumbe
 --------------------------------------------------------------------------
 local str = Net.AddString( 'ambi_ui_notify_draw' )
 function Ambi.UI.Notify.Draw( ePly, nID, tOptions )
-    if not nID then return end
     if not tOptions or not istable( tOptions ) then Gen.Error( 'UI', 'Notify.Draw: tOptions' ) return end
     if not IsValid( ePly ) or not ePly:IsPlayer() then return end
 
     net.Start( str )
-        net.WriteUInt( nID or 1, 6 )
+        net.WriteUInt( nID or 1, 16 )
         net.WriteTable( tOptions )
     net.Send( ePly )
 end
 
 function Ambi.UI.Notify.DrawAll( nID, tOptions )
-    if not nID then return end
     if not tOptions or not istable( tOptions ) then Gen.Error( 'UI', 'Notify.Draw: tOptions' ) return end
 
     net.Start( str )
-        net.WriteUInt( nID or 1, 6 )
+        net.WriteUInt( nID or 1, 16 )
         net.WriteTable( tOptions )
     net.Broadcast()
 end
@@ -30,5 +28,5 @@ end
 local PLAYER = FindMetaTable( 'Player' )
 
 function PLAYER:NotifySend( nID, tOptions )
-    Ambi.UI.Notify.Draw( self, nID, tOptions )
+    Ambi.UI.Notify.Draw( self, nID or 1, tOptions )
 end

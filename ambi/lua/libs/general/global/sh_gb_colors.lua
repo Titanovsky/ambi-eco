@@ -65,9 +65,4 @@ Ambi.General.Global.Colors = Ambi.General.Global.Colors or {
     RU_PINK = rgb(248, 165, 194), -- rogue pink
     RU_BLUE = rgb(99, 205, 218), -- squeaky
 }
-
 setmetatable( Ambi.General.Global.Colors, { __index = function() return C_DEFAULT end })
-
-for i = 0, 255 do
-    Ambi.General.Global.Colors[ 'PANEL_'..i ] = rgb( 0, 0, 0, i )
-end

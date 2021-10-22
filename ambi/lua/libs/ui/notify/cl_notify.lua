@@ -33,7 +33,7 @@ function Ambi.UI.Notify.GetLogs()
 end
 
 net.Receive( 'ambi_ui_notify_draw', function()
-    local id = net.ReadUInt( 6 ) or 1
+    local id = net.ReadUInt( 16 ) or 1
     local tab = net.ReadTable() or {}
 
     Ambi.UI.Notify.Draw( id, tab )

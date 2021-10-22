@@ -50,7 +50,7 @@ end
 function Ambi.RegEntity.Hull( eObj, nHullType )
     nHullType = nHullType or HULL_HUMAN
 
-    eObj:SetHullType( nHullType)
+    eObj:SetHullType( nHullType )
 	eObj:SetHullSizeNormal()
 
     return eObj

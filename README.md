@@ -1,6 +1,6 @@
 ![Ambi-Eco-Logo](https://i.imgur.com/0SGwWiL.png)
 
-* Version: __5.0.1__
+* Version: __5.1__
 * Status: __Beta__
 * Team: __Ambi Team__
 * Language: __GLua (Lua)__
