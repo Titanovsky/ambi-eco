@@ -1,7 +1,7 @@
 net.Receive( 'ambi_player_run_command', function()
-    LocalPlayer():ConCommand( net.ReadString() )
+    LocalPlayer():ConCommand( net.ReadString() or '' )
 end )
 
 net.Receive( 'ambi_player_open_url', function()
-    gui.OpenURL( net.ReadString() )
+    gui.OpenURL( net.ReadString() or '' )
 end )

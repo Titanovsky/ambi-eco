@@ -152,7 +152,6 @@ function string.ExplodeCustom( nType, sSeparator, sStr, bPattern )
 end
 
 -- -------------------------------------------------------------------------------------
-
 -- by Odic-Force
 function string.Capitalize( sString )
     -- https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L572
@@ -395,15 +394,12 @@ function string.NiceDateDash( sStr )
 end
 
 -- -------------------------------------------------------------------------------------
-
 function string.ReplaceFull( sStr, sReplace )
 	local str = ''
 	for i = 1, #sStr do str = str..sReplace end
 	
 	return str
 end
-
--- -------------------------------------------------------------------------------------
 
 function string.FindObsceneWords( sStr )
 	if not sStr or not isstring( sStr ) then A.Error( 'General.String', 'RemoveObsceneWords | sStr is not selected!' ) return '' end
@@ -416,4 +412,12 @@ function string.ReplaceObsceneWords( sStr )
 	for i = 1, utf8.len( sStr ) do str = str..'*' end
 	
 	return str
+end
+
+-- -------------------------------------------------------------------------------------
+-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/util.lua#L158
+function string.IsValidSteamID( sSteamID )
+	if not sSteamID then return false end
+
+	return sSteamID:match( 'STEAM_0:[0-1]:[0-9]+$' ) ~= nil
 end

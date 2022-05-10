@@ -150,7 +150,7 @@ function Ambi.UI.Draw.Text( xPos, yPos, sText, sFont, cColor, anyAlign, nOutline
     for i = 1, #tab do
         local str = tab[ i ]
         local y_offset = Ambi.UI.Draw.GetTextSizeY( font, str ) or 0
-        Draw( str, font, xPos or 0, y + ( y_offset - 8 ) * ( i - 1 ), cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 1, cColorOutline or C.ABS_BLACK ) 
+        Draw( str, font, xPos or 0, y + ( y_offset ) * ( i - 1 ), cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 1, cColorOutline or C.ABS_BLACK ) 
     end
 end
 
@@ -194,7 +194,7 @@ end
 -- -------------------------------------------------------------------------------------
 
 -- by TechoHUD
-function Ambi.UI.Draw.ObliqueRect( xPos, yPos, wSize, hSize, cColor, bReverse, matTexture )
+function Ambi.UI.Draw.ObliqueRect( wSize, hSize, xPos, yPos, cColor, bReverse, matTexture )
     -- https://steamcommunity.com/sharedfiles/filedetails/?id=1120612949
 	local rect = {}
 
@@ -210,13 +210,13 @@ function Ambi.UI.Draw.ObliqueRect( xPos, yPos, wSize, hSize, cColor, bReverse, m
         rect[4] = { x = xPos + hSize, y = yPos + hSize }
     end
 
-    surface.SetDrawColor( cColor:Unpack() )
+    SetDrawColor( cColor and cColor.r or 255, cColor and cColor.g or 255, cColor and cColor.b or 255, cColor and cColor.a or 255 )
     if matTexture then surface.SetMaterial( matTexture ) else draw.NoTexture() end
     surface.DrawPoly( rect )
 end
 
 -- by Kruzgi
-function Ambi.UI.Draw.CircleKruzgi( xPos1, yPos1, wSize, hSize, cColor, aAngle, xPos2, yPos2, matTexture )
+function Ambi.UI.Draw.CircleKruzgi( wSize, hSize, xPos1, yPos1, cColor, aAngle, xPos2, yPos2, matTexture )
     -- https://github.com/kruzgi/Garrys-Mod-Draw-Circle/blob/master/draw_circle.lua
     for i = 0, aAngle do
         local c = math.cos( math.rad( i ) )

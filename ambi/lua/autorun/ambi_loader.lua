@@ -1,5 +1,5 @@
 Ambi = Ambi or {}
-Ambi.version = '5.1'
+Ambi.version = '6.0'
 
 AMB = setmetatable( AMB or {}, { __index = Ambi } )-- для совместимости
 
@@ -51,7 +51,7 @@ local function FileWorkshopInitialize( sFile )
     end
 
     WorkshopAdd( id )
-    Print( '[Workshop] Initialized ['..id..'] ['..title..']' )
+    Print( '[Workshop] Added ['..id..'] ['..title..']' )
 end
 
 local flags_init = {
@@ -62,6 +62,7 @@ local flags_init = {
     [ 'cfg' ] = FileSharedInitialize,
     [ 'ent' ] = FileSharedInitialize,
     [ 'wep' ] = FileSharedInitialize,
+    [ 'tool' ] = FileSharedInitialize,
     [ 'npc' ] = FileSharedInitialize,
 
     [ 'wid' ] = FileWorkshopInitialize
@@ -114,21 +115,20 @@ local NAMES_LIBRARIES = {
     [ 'UI' ] = true,
 }
 
-function Ambi.ConnectModule( sTableTitle, sNameDirectoryModule, sDescription )
-    if ( sTableTitle == nil ) or ( sNameDirectoryModule == nil ) then print( '[Error] Ambi.ConnectModule | not selected headers!' ) return end
-    if NAMES_LIBRARIES[ sTableTitle ] then print( '[Error] Ambi.ConnectModule | name '..sTableTitle..' is occupaited by library!' ) return end
-    if Ambi.Modules[ sTableTitle ] then return end
+function Ambi.ConnectModule( sNameDirectoryModule, sDescription )
+    if ( sNameDirectoryModule == nil ) then print( '[Error] Ambi.ConnectModule | Not selected name of directory!' ) return end
+    if Ambi.Modules[ sNameDirectoryModule ] then return end
 
-    Ambi.Modules[ sTableTitle ] = {}
-    Ambi[ sTableTitle ] = {}
-    Ambi[ sTableTitle ][ 'Config' ] = {}
+    Ambi.Modules[ sNameDirectoryModule ] = {}
 
-    current_module = sTableTitle
+    current_module = sNameDirectoryModule
     FilesAdd( 'modules/'..sNameDirectoryModule, true )
 
     if CLIENT then return end
     
-    Print( '[Modules] Connected '..sTableTitle..' - '..sDescription )
+    sDescription = sDescription or ''
+
+    Print( '[Modules] Connected '..sNameDirectoryModule..' • '..sDescription )
 end
 
 function Ambi.ConnectGamemode( sTableTitle, sNameDirectoryModule )
@@ -171,32 +171,54 @@ end
 
 local function LoaderConnectWorkshopIDFromAddons()
     local _, dirs = FileFind( 'addons/*', 'GAME' )
+    if not dirs then return end
 
     for _, dir in IntPairs( dirs ) do
         local files, _ = FileFind( 'addons/'..dir..'/*', 'GAME' )
+        if not files then continue end
+        
         for _, file in IntPairs( files ) do
-            if ( StringStart( file, 'wid' ) == false ) then continue end
+            if StringStart( file, 'wid' ) then FileWorkshopInitialize( dir..'/'..file ) end
+        end
+    end
+end
 
-            FileWorkshopInitialize( dir..'/'..file ) 
+local function LoaderAutoConnect()
+    local _, modules = FileFind( 'modules/*', 'LUA' )
+    if not modules then return end
+
+    for _, module in IntPairs( modules ) do 
+        local files, _ = FileFind( 'modules/'..module..'/*', 'LUA' )
+        if not files then continue end
+
+        for _, file in IntPairs( files ) do
+            if StringStart( file, 'autoload' ) then FileSharedInitialize( 'modules/'..module..'/'..file ) end
         end
     end
 end
 
 ----------------------------------------------------------------------------------------------------
+
+----------------------- ORDER LOADING -------------------------
 LoaderConnectLibs()                
 LoaderConnectWorkshopIDFromAddons() 
-LoaderConnect( 'ambi_config.lua' )               
+LoaderAutoConnect()
+LoaderConnect( 'ambi_config.lua' )
+---------------------------------------------------------------
 
-local CFG = Ambi.Config
+if ( Ambi.Config.dev == nil ) then Ambi.Config.dev = false end
+if ( Ambi.Config.language == nil ) then Ambi.Config.language = 'en' end
+
 local ConsoleRun, FileDirCreate, FileExists = RunConsoleCommand, file.CreateDir, file.Exists
 
-if ( FileExists( '[ambi]', 'DATA' ) == false ) then FileDirCreate( '[ambi]' ) end -- checking on existence of a folder 
-if ( FileExists( '[ambi]/'..CFG.directory, 'DATA' ) == false ) then FileDirCreate( '[ambi]/'..CFG.directory ) end
+if ( FileExists( 'ambi', 'DATA' ) == false ) then FileDirCreate( 'ambi' ) end -- checking on existence of a folder 
 ----------------------------------------------------------------------------------------------------
 
 print( '\n==================================' )
 print( '|| \tAmbi Eco v'..Ambi.version..' \t||' )
 print( '==================================\n' )
+
+if game.SinglePlayer() then return end
 
 timer.Simple( 2, function()
     local C = Ambi.General.Global.Colors

@@ -1,12 +1,14 @@
-Ambi.HTTP = Ambi.HTTP or {}
-
 -- -------------------------------------------------------------------------------------
 local Gen = Ambi.General
 local Fetch, Post = http.Fetch, http.Post
 -- -------------------------------------------------------------------------------------
 local requests = {}
 
-function Ambi.HTTP.Post( sUrl, tParameters, fOnSuccess, fOnFailure, tHeaders )
+function Ambi.HTTP.MakeRequest( tRequest )
+    return HTTP( tRequest )
+end
+
+function Ambi.HTTP.Post( sUrl, fOnSuccess, fOnFailure, tParameters, tHeaders )
     if not sUrl then Gen.Error( 'HTTP', 'Post | sUrl is not selected!' ) end
 
     requests[ #requests + 1 ] = { type = 'POST', url = sUrl, param = tParameters, success = fOnSuccess, failure = fOnFailure, headers = tHeaders, time = os.time() }

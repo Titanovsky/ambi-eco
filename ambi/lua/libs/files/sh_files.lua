@@ -14,7 +14,7 @@ Ambi.Files.WHITELIST_TYPES = {
     [ 'wav' ] = true,
     [ 'ogg' ] = true
 }
-Ambi.Files.SERVER_DIR = '[ambi]/'
+Ambi.Files.SERVER_DIR = 'ambi/'
 
 local file, timer, print = file, timer, print
 

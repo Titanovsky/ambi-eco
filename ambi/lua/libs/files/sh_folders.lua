@@ -20,7 +20,3 @@ end
 function Ambi.Files.Folders.CreateConfigFolder()
     if not file.IsDir( Ambi.Files.SERVER_DIR, 'DATA' ) then Ambi.Files.Folders.Create( Ambi.Files.SERVER_DIR, true ) end
 end
-
-function Ambi.Files.Folders.CreateServer()
-    if not file.IsDir( Ambi.Files.SERVER_DIR..Ambi.Config.directory, 'DATA' ) then Ambi.Files.Folders.Create( Ambi.Files.SERVER_DIR..Ambi.Config.directory, true ) end
-end

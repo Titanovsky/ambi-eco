@@ -12,6 +12,8 @@ if SERVER then
             local _key = tostring( key or '' )
 
             if ( #_key > 3 ) and ( _key[ 1 ] == 'n' ) and ( _key[ 2 ] == 'w' ) and ( _key[ 3 ] == '_' ) then 
+                _key = string.sub( _key, 4, #_key  )
+
                 if isstring( value ) then self:SetNWString( _key, value ) end
                 if isnumber( value ) then 
                     if ( value % 1 == 0 ) then self:SetNWInt( _key, value ) else self:SetNWFloat( _key, value ) end
@@ -30,13 +32,13 @@ if SERVER then
 else
     local cache = {}
     local types = {
-        string = function( self, key ) return self:GetNWString( key, nil ) end,
-        int = function( self, key ) return self:GetNWInt( key, nil ) end,
-        float = function( self, key ) return self:GetNWFloat( key, nil ) end,
+        string = function( self, key ) return self:GetNWString( key, false ) end,
+        int = function( self, key ) return self:GetNWInt( key, false ) end,
+        float = function( self, key ) return self:GetNWFloat( key, false ) end,
         bool = function( self, key ) return self:GetNWBool( key, nil ) end,
-        vector = function( self, key ) return self:GetNWVector( key, nil ) end,
-        angle = function( self, key ) return self:GetNWAngle( key, nil ) end,
-        entity = function( self, key ) return self:GetNWEntity( key, nil ) end,
+        vector = function( self, key ) return self:GetNWVector( key, false ) end,
+        angle = function( self, key ) return self:GetNWAngle( key, false ) end,
+        entity = function( self, key ) return self:GetNWEntity( key, false ) end,
     }
 
     local function EnableNWProperty( tMetatable ) -- CLIENT
@@ -46,16 +48,18 @@ else
             local _key = tostring( key or '' )
 
             if ( #_key > 3 ) and ( _key[ 1 ] == 'n' ) and ( _key[ 2 ] == 'w' ) and ( _key[ 3 ] == '_' ) then
+                _key = string.sub( _key, 4, #_key  )
+
                 local type = cache[ _key ]
                 if type then return types[ type ]( self, _key ) end
 
-                if ( self:GetNWString( _key, false ) == false ) then else cache[ _key ] = 'string' return self:GetNWString( key ) end
-                if ( self:GetNWInt( _key, false ) == false ) then else cache[ _key ] = 'int' return self:GetNWInt( key ) end
-                if ( self:GetNWFloat( _key, false ) == false ) then else cache[ _key ] = 'float' return self:GetNWFloat( key ) end
-                if ( self:GetNWBool( _key, nil ) == nil ) then else cache[ _key ] = 'bool' return self:GetNWBool( key ) end
-                if ( self:GetNWVector( _key, false ) == false ) then else cache[ _key ] = 'vector' return self:GetNWVector( key ) end
-                if ( self:GetNWAngle( _key, false ) == false ) then else cache[ _key ] = 'angle' return self:GetNWAngle( key ) end
-                if ( self:GetNWEntity( _key, false ) == false ) then else cache[ _key ] = 'entity' return self:GetNWEntity( key ) end
+                if ( self:GetNWInt( _key, false ) == false ) then else cache[ _key ] = 'int' return self:GetNWInt( key, nil ) end
+                if ( self:GetNWFloat( _key, false ) == false ) then else cache[ _key ] = 'float' return self:GetNWFloat( key, nil ) end
+                if ( self:GetNWString( _key, false ) == false ) then else cache[ _key ] = 'string' return self:GetNWString( key, nil ) end
+                if ( self:GetNWBool( _key, nil ) == nil ) then else cache[ _key ] = 'bool' return self:GetNWBool( key, nil ) end
+                if ( self:GetNWVector( _key, false ) == false ) then else cache[ _key ] = 'vector' return self:GetNWVector( key, nil ) end
+                if ( self:GetNWAngle( _key, false ) == false ) then else cache[ _key ] = 'angle' return self:GetNWAngle( key, nil ) end
+                if ( self:GetNWEntity( _key, false ) == false ) then else cache[ _key ] = 'entity' return self:GetNWEntity( key, nil ) end
             end
         
             return oldindex( self, key )

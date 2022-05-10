@@ -27,17 +27,17 @@ end
 
 -- -------------------------------------------------------------------------------------
 function Ambi.General.Network.Incoming( nLen, ePly )
-    if SERVER then 
-		if ( IsValid( ePly ) == false ) then return end
-		if ePly.block_net_messages then return end
-	end
+    if SERVER and ePly.block_net_messages then return end
 
     local i = net.ReadHeader()
 	local strName = util.NetworkIDToString( i )
-	if ( strName == nil ) then return end
+
+	strName = strName:lower()
 	
 	local func = net.Receivers[ strName:lower() ]
 	if ( func == nil ) then return end
+
+	if ( hook.Call( '[Ambi.General.Network.CanIncoming]', nil, ePly, strName, func, nLen ) == false ) then return end
 
 	nLen = nLen - 16
 	
@@ -163,7 +163,7 @@ end
 -- -------------------------------------------------------------------------------------
 local PLAYER = FindMetaTable( 'Player' ) 
 
-function PLAYER:NetworkPing( sMsg )
+function PLAYER:PingNetwork( sMsg )
 	Ambi.General.Network.Ping( self, sMsg )
 end
 

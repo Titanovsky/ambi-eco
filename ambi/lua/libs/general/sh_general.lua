@@ -5,31 +5,16 @@ local print, tostring, os, ipairs, concommand, PrintTable, Material = print, tos
 local _MsgC, istable, system = MsgC, istable, system
 
 -------------------------------------------------------------------------------------------------------
-function Ambi.General.OnDebug( fAction )
-    if Ambi.Config.dev then return fAction() end
+function Ambi.General.CreateModule( sTable )
+    Ambi[ sTable ] = Ambi[ sTable ] or {}
+    Ambi[ sTable ][ 'Config' ] = Ambi[ sTable ][ 'Config' ] or {}
+
+    return Ambi[ sTable ], Ambi[ sTable ][ 'Config' ]
 end
 
-local COLOR_CLEAR_SEQUENCE = '\27[0m'
-function Ambi.General.Print( ... )
-    local args = { ... }
-
-    if system.IsLinux() then
-        -- Source: https://github.com/SuperiorServers/dash/blob/a0d4347371503b1577d72bed5f6df46d48909f56/lua/dash/extensions/server/console.lua
-        -- Author: dash
-        local text = COLOR_CLEAR_SEQUENCE
-
-        for k, v in ipairs( args ) do
-            if istable( v ) and v.r and v.g and v.b then
-                text = text..'\27[38;5;'..Ambi.General.Utility.Coding.RGBToAnsi256( v.r, v.g, v.b )..'m'
-            else
-                text = text..v
-            end
-        end
-
-        _MsgC( text..COLOR_CLEAR_SEQUENCE )
-    else
-        MsgC( unpack( args ) )
-    end
+-------------------------------------------------------------------------------------------------------
+function Ambi.General.OnDebug( fAction )
+    if Ambi.Config.dev then return fAction() end
 end
 
 -------------------------------------------------------------------------------------------------------
@@ -49,7 +34,34 @@ end
 Ambi.General.AddConsoleCommand( 'cmds', function() PrintTable( consolecmds ) end )
 
 -------------------------------------------------------------------------------------------------------
-local red, green, blue, yellow, white, gray = nil
+local red, green, blue, yellow, white, gray, ambi = nil
+
+local logs = {}
+function Ambi.General.Log( sMessage )
+    if not ambi then
+        local C = Ambi.General.Global.Colors
+
+        red = C.ERROR
+        green = C.FLAT_GREEN
+        blue = C.FLAT_BLUE
+        yellow = C.AMBI_YELLOW
+        white = C.ABS_WHITE
+        gray = C.AMBI_GRAY
+        ambi = C.AMBI
+    end
+
+    sMessage = sMessage or 'Text'
+
+    local text = '[AMBI] '..sMessage
+    logs[ #logs + 1 ] = { message = text, time = os.date( '(%X)', os.time() ) }
+
+    MsgC( ambi, '\n[AMBI] ', white, sMessage..'\n' )
+end
+
+function Ambi.General.GetLogs()
+    return logs
+end
+Ambi.General.AddConsoleCommand( 'logs', function() PrintTable( logs ) end )
 
 local warnings = {}
 function Ambi.General.Warning( sHeader, sMessage )
@@ -115,9 +127,9 @@ Ambi.General.AddConsoleCommand( 'errors', function() PrintTable( errors ) end )
 
 -------------------------------------------------------------------------------------------------------
 function Ambi.General.Material( sHeader, sParam )
-    return Material( 'ambi/'..sHeader, sParam )
+    return Material( '[ambi]/'..sHeader, sParam )
 end
 
 function Ambi.General.Sound( sHeader )
-    return 'ambi/'..sHeader
+    return '[ambi]/'..sHeader
 end

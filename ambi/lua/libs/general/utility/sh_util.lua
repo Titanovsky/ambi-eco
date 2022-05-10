@@ -77,10 +77,88 @@ function util.UnpackColor( cColor )
 end
 
 -- -------------------------------------------------------------------------------------
+-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/util.lua#L77
+function util.Copy( anyVar )
+	if not anyVar then return end
 
--- by Odic-Force
+	local type = type( anyVar )
+
+	if ( type == 'table' ) then
+		local output = {}
+
+		for k, v in pairs( anyVar ) do
+			if ( k == anyVar ) or ( v == anyVar ) then continue end
+
+			output[ util.Copy( k ) ] = util.Copy( v )
+		end
+
+		return output
+	elseif ( type == 'Angle' ) then return Angle( anyVar.p, anyVar.y, anyVar.r )
+	elseif ( type == 'Vector' ) then return Vector( anyVar ) 
+	end
+
+	return anyVar
+end
+
+-- -------------------------------------------------------------------------------------
+-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/util.lua#L77
+function util.VectorRandom( nX, nY, nZ )
+	nX, nY, nZ = nX or 1, nY or 1, nZ or 1
+
+	return Vector( math.Rand( -nX, nX ), math.Rand( -nY, nY ), math.Rand( -nZ, nZ ) )
+end
+
+function VectorRandom( nX, nY, nZ )
+	return util.VectorRandom( nX, nY, nZ )
+end
+
+-- -------------------------------------------------------------------------------------
+-- From: https://github.com/Kefta/gs_lib/blob/master/lua/code_gs/lib/util.lua#L66
+function util.ClearTrace()
+	return {
+		Entity = NULL,
+		Fraction = 1,
+		FractionLeftSolid = 0,
+		Hit = false,
+		HitBox = 0,
+		HitGroup = 0,
+		HitNoDraw = false,
+		HitNonWorld = false,
+		HitNormal = Vector(0, 0, 0),
+		HitPos = Vector(0, 0, 0),
+		HitSky = false,
+		HitTexture = "**empty**",
+		HitWorld = false,
+		MatType = 0,
+		Normal = Vector(0, 0, 0),
+		PhysicsBone = 0,
+		StartPos = Vector(0, 0, 0),
+		SurfaceProps = 0,
+		StartSolid = false,
+		AllSolid = false
+	}
+end
+
+-- From: https://github.com/Kefta/gs_lib/blob/master/lua/code_gs/lib/util.lua#L91
+function util.TracePlayerBBox( tTable, ePly )
+	if not tTable or not ePly then return end
+
+	tTable.mins, tTable.maxs = ePly:Crouching() and ePly:GetHullDuck() or ePly:GetHull()
+	tTable.filter = tTable.filter or pPlayer
+	
+	return util.TraceRay( tTable )
+end
+
+-- From: https://github.com/Kefta/gs_lib/blob/master/lua/code_gs/lib/util.lua#L260
+function util.TraceRay( tTable )
+	if ( tTable.mins and tTable.maxs ) then return util.TraceHull( tTable ) end
+	
+	return util.TraceLine( tTable )
+end
+
+-- -------------------------------------------------------------------------------------
+-- From: https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L603
 function util.ClassIsNearby( vPos, sClass, nRange )
-    -- Source: https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L603
     -- Refactored this code
     if not sClass or not isstring( sClass ) then return end
 
@@ -97,10 +175,9 @@ function util.ClassIsNearby( vPos, sClass, nRange )
 	return false
 end
 
--- by Odic-Force
+-- From: https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L614
 local VECTOR = Vector( 0, 0, 1 ) -- constant for IsInWater
 function util.IsInWater( vPos )
-    -- Source: https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L614
     vPos = vPos or Vector( 0, 0, 0 )
 
 	local trace = {}
@@ -112,8 +189,6 @@ function util.IsInWater( vPos )
 end
 
 -- -------------------------------------------------------------------------------------
--- by SuperiorServers
--- Source: https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/util.lua
 
 -- Tracer flags
 TRACER_FLAG_WHIZ = 0x0001
@@ -211,8 +286,8 @@ local function isempty( vPos, nRange )
 	return true
 end
 
+-- from: -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/util.lua#L117
 function util.FindEmptyPos( vPos, nRange, nSteps )
-    -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/util.lua#L117
     vPos = vPos or Vector( 0, 0, 0 )
     nRange = nRange or 0
     nSteps = nSteps or 1
@@ -241,7 +316,6 @@ end
 
 -- -------------------------------------------------------------------------------------
 if CLIENT then
-	-- Source: https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/client/util.lua
 	local Material = Material
 
 	local name = GetConVar( 'sv_skyname' ):GetString()
@@ -255,7 +329,8 @@ if CLIENT then
 		Material( 'skybox/'.. name .. 'up' ),
 	}
 		
-	function util.SetSkybox( sSkybox ) -- Thanks someone from some fp post I cant find	
+	-- From: https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/client/util.lua
+	function util.SetSkybox( sSkybox )	
 		sSkybox = sSkybox or 'painted'
 
 		for i = 1, 6 do
