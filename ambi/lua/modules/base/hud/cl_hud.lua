@@ -53,11 +53,11 @@ hook.Add( 'HUDPaint', 'Ambi.Base.DrawCustomHUD', function()
 end )
 
 hook.Add( 'HUDShouldDraw', 'Ambi.Base.DontDrawHL2HUD', function( sElement ) 
-    return not Ambi.Base.Config.hud_block[ sElement ] 
+    if Ambi.Base.Config.hud_enable then return not Ambi.Base.Config.hud_block[ sElement ] end
 end )
 
 hook.Add( 'HUDDrawTargetID', 'Ambi.Base.DontDrawTargetID', function() 
-    return not Ambi.Base.Config.hud_disable_target_id 
+    if Ambi.Base.Config.hud_enable then return not Ambi.Base.Config.hud_disable_target_id end
 end )
 
 local draw_panel = nil

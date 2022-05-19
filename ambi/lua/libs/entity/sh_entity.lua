@@ -13,7 +13,7 @@ function ENTITY:CheckDistance( eObj, nDist )
 end
 
 -- -------------------------------------------------------------------------------------
-function ENTITY:SetDelay( sDelay, nTime, nRepetitions )
+function ENTITY:SetDelay( sDelay, nTime, nRepetitions, fAction )
 	if not sDelay then return end
 
 	nTime = nTime or 1
@@ -21,7 +21,7 @@ function ENTITY:SetDelay( sDelay, nTime, nRepetitions )
 
     local id = self:IsPlayer() and self:SteamID() or self:EntIndex()
 
-	timer.Create( sDelay..'['..id..']', nTime, nRepetitions, function() end )
+	timer.Create( sDelay..'['..id..']', nTime, nRepetitions, fAction or function() end )
 end
 
 function ENTITY:GetDelay( sDelay )
