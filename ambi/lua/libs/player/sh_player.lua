@@ -88,6 +88,36 @@ function PLAYER:GetTimers()
 end
 
 -- -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+function PLAYER:SetDelay( sDelay, nTime, nRepetitions, fAction )
+	if not sDelay then return end
+
+	nTime = nTime or 1
+	nRepetitions = nRepetitions or 1
+
+    local id = self:SteamID()
+
+	timer.Create( sDelay..'['..id..']', nTime, nRepetitions, fAction or function() end )
+end
+
+function PLAYER:GetDelay( sDelay )
+    local id = self:SteamID()
+
+	return timer.Exists( sDelay..'['..id..']' ) and math.floor( timer.TimeLeft( sDelay..'['..id..']' ) ) or nil
+end
+
+function PLAYER:CheckDelay( sDelay, fFail, fSuccess )
+	if self:GetDelay( sDelay ) then
+		if fFail then fFail( self ) end
+
+		return true
+	else
+		if fSuccess then fSuccess( fSuccess ) end
+
+		return false
+	end
+end
+
+-- -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 function PLAYER:TeamName()
 	return team.GetName( self:Team() )
 end

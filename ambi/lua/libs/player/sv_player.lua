@@ -26,6 +26,7 @@ function PLAYER:GetIPInfo( fAction )
 	return self.real_info
 end
 
+-- TODO: Rewrite
 function PLAYER:GetCity()
     return self.real_info.city
 end
@@ -100,14 +101,3 @@ function PLAYER:OpenURL( sURL )
         net.WriteString( sURL or '' )
     net.Send( self )
 end
-
--- --------------------------------------------------------------------------------------------------------------------------------------
-hook.Add( 'PlayerInitialSpawn', 'Ambi.Player.GetIPInfo', function( ePly ) 
-    if game.SinglePlayer() then return end
-    
-    timer.Simple( 1, function()
-        if not IsValid( ePly ) then return end
-
-        ePly:GetIPInfo() -- create ePly.real_info
-    end )
-end )

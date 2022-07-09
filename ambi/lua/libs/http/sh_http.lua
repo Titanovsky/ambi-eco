@@ -1,3 +1,5 @@
+Ambi.HTTP = Ambi.HTTP or {}
+
 -- -------------------------------------------------------------------------------------
 local Gen = Ambi.General
 local Fetch, Post = http.Fetch, http.Post

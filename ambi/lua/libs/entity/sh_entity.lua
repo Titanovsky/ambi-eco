@@ -13,25 +13,25 @@ function ENTITY:CheckDistance( eObj, nDist )
 end
 
 -- -------------------------------------------------------------------------------------
-function ENTITY:SetDelay( sDelay, nTime, nRepetitions, fAction )
+function ENTITY:SetDelayTime( sDelay, nTime, nRepetitions, fAction )
 	if not sDelay then return end
 
 	nTime = nTime or 1
 	nRepetitions = nRepetitions or 1
 
-    local id = self:IsPlayer() and self:SteamID() or self:EntIndex()
+    local id = tostring( self )
 
 	timer.Create( sDelay..'['..id..']', nTime, nRepetitions, fAction or function() end )
 end
 
-function ENTITY:GetDelay( sDelay )
-    local id = self:IsPlayer() and self:SteamID() or self:EntIndex()
+function ENTITY:GetDelayTime( sDelay )
+    local id = tostring( self )
 
 	return timer.Exists( sDelay..'['..id..']' ) and math.floor( timer.TimeLeft( sDelay..'['..id..']' ) ) or nil
 end
 
-function ENTITY:CheckDelay( sDelay, fFail, fSuccess )
-	if self:GetDelay( sDelay ) then
+function ENTITY:CheckDelayTime( sDelay, fFail, fSuccess )
+	if self:GetDelayTime( sDelay ) then
 		if fFail then fFail( self ) end
 
 		return true

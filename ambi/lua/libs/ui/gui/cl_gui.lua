@@ -1,10 +1,11 @@
 Ambi.UI.GUI = Ambi.UI.GUI or {}
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 local C, Gen, UT, Draw = Ambi.General.Global.Colors, Ambi.General, Ambi.General.Utility, Ambi.UI.Draw
-
 local w, h = ScrW(), ScrH()
 local vgui, draw, surface, IsColor, ValidPanel = vgui, draw, surface, IsColor, ValidPanel
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 function Ambi.UI.GUI.Draw( sVGUIType, vguiParent )
     return vgui.Create( sVGUIType or 'DPanel', vguiParent )
 end
@@ -196,7 +197,7 @@ function Ambi.UI.GUI.DrawModel3D( vguiParent, wSize, hSize, xPos, yPos, sModelPa
     return frame
 end
 
--- Options --------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 function Ambi.UI.GUI.OnCursor( vguiPanel, fOnCursorEntered, fOnCursorExited )
     if not ValidPanel( vguiPanel ) then Gen.Error( 'UI.GUI', 'OnCursor: selected unvalid vguiPanel' ) return end
 

@@ -1,5 +1,5 @@
 Ambi = Ambi or {}
-Ambi.version = '6.0'
+Ambi.version = '6.1'
 
 AMB = setmetatable( AMB or {}, { __index = Ambi } )-- для совместимости
 
@@ -115,9 +115,23 @@ local NAMES_LIBRARIES = {
     [ 'UI' ] = true,
 }
 
+function Ambi.CreateModule( sTable )
+    Ambi[ sTable ] = Ambi[ sTable ] or {}
+    Ambi[ sTable ][ 'Config' ] = Ambi[ sTable ][ 'Config' ] or {}
+
+    return Ambi[ sTable ], Ambi[ sTable ][ 'Config' ]
+end
+
 function Ambi.ConnectModule( sNameDirectoryModule, sDescription )
     if ( sNameDirectoryModule == nil ) then print( '[Error] Ambi.ConnectModule | Not selected name of directory!' ) return end
     if Ambi.Modules[ sNameDirectoryModule ] then return end
+    
+    local is_exists = false
+    local _, folders = file.Find( 'modules/*', "LUA" )
+    for _, dir in ipairs( folders ) do
+        if ( dir == sNameDirectoryModule ) then is_exists = true break end -- workaround: https://github.com/Facepunch/garrysmod-issues/issues/1038
+    end
+    if not is_exists then return end
 
     Ambi.Modules[ sNameDirectoryModule ] = {}
 

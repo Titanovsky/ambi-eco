@@ -1,23 +1,23 @@
-Ambi.Math = Ambi.Math or {}
-setmetatable( Ambi.Math, { __index = math } )
+Ambi.General.Math = Ambi.General.Math or {}
+setmetatable( Ambi.General.Math, { __index = math } )
 
 local math_cos, math_sin, pi = math.cos, math.sin, math.pi
 
 -- -------------------------------------------------------------------------------------------------------------------------------------------------------------------- --
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L25
 function math.Lerp( nT, nA, nB )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L25
     return nA + ( nB - nA ) * nT
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L42
 function math.SDKSimpleSpline( nValue )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L42
     local sqrt = nValue * nValue
 
     return 3 * sqrt - 2 * sqrt * nValue
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L55
 function math.LerpQuintic( nT, nA, nB )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L55
     if ( t < 0 ) then return nA end
 	if ( t >= 1 ) then return nB end
 
@@ -26,13 +26,13 @@ function math.LerpQuintic( nT, nA, nB )
 	return math.Lerp( value, nA, nB )
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L70
 function math.Quintic( nT )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L70
 	return nT * nT * nT * ( nT * ( nT * 6 - 15 ) + 10 )
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L82
 function math.LerpCosine( nT, nA, nB )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L82
 	if ( t < 0 ) then return nA end
 	if ( t >= 1 ) then return nB end
 
@@ -41,13 +41,13 @@ function math.LerpCosine( nT, nA, nB )
 	return math.Lerp( value, nA, nB )
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L97
 function math.Cosine( nT )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L97
 	return ( 1 - math_cos( nT * pi ) ) / 2
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L109
 function math.LerpSinusine( nT, nA, nB )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L109
 	if ( t < 0 ) then return nA end
 	if ( t >= 1 ) then return nB end
 
@@ -56,13 +56,13 @@ function math.LerpSinusine( nT, nA, nB )
 	return math.Lerp( value, nA, nB )
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L124
 function math.Sinusine( nT )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L124
 	return ( 1 - math_sin( nT * pi ) ) / 2
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L136
 function math.LerpCubic( nT, nA, nB )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L136
 	if ( t < 0 ) then return nA end
 	if ( t >= 1 ) then return nB end
 
@@ -71,8 +71,8 @@ function math.LerpCubic( nT, nA, nB )
 	return math.Lerp( value, nA, nB )
 end
 
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L151
 function math.Cubic( nT )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/lerp.lua#L151
 	return -2 * nT * nT * nT + 3 * nT * nT
 end
 

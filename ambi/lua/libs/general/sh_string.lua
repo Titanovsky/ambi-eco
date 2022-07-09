@@ -1,15 +1,15 @@
 Ambi.General.String = Ambi.General.String or {}
 setmetatable( Ambi.General.String, { __index = string } )
 
--- -------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 local A = Ambi.General
 local KEYS = nil
 local string, ipairs, isstring, utf8, ipairs, tonumber = string, ipairs, isstring, utf8, ipairs, tonumber
 local Explode, Trim, Char, GSub = string.Explode, string.Trim, string.char, string.gsub
 local Random = math.random
 local rshift, band = bit.rshift, bit.band
--- -------------------------------------------------------------------------------------
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 RUSSIAN_CHARS_UPPER = {
 	[ 'ё' ] = 'Ё',
 	[ 'й' ] = 'Й',
@@ -89,8 +89,6 @@ function string.IsRussianLowerChar( sChar )
 	return tobool( RUSSIAN_CHARS_UPPER[ sChar ] )
 end
 
--- -------------------------------------------------------------------------------------
-
 function string.IsValid( sString )
     if not sString or not isstring( sString ) then return false end
 
@@ -117,10 +115,77 @@ function string.ToSafe( sString )
     return new_str
 end
 
--- -------------------------------------------------------------------------------------
-
 EXPLODE_CLASSIC, EXPLODE_DASH = 0, 1
 
+function string.ExplodeCustom( nType, sSeparator, sStr, bPattern )
+    nType = nType or 0
+
+    if ( nType == 1 ) then return string.ExplodeDash( sSeparator, sStr, bPattern )
+    else return string.Explode( sSeparator, sStr, bPattern )
+    end
+end
+
+function string.ReplaceFull( sStr, sReplace )
+	local str = ''
+	for i = 1, #sStr do str = str..sReplace end
+	
+	return str
+end
+
+function string.FindObsceneWords( sStr )
+	if not sStr or not isstring( sStr ) then A.Error( 'General.String', 'RemoveObsceneWords | sStr is not selected!' ) return '' end
+
+	return Ambi.General.Global.Words.OBSCENE[ sStr ]
+end
+
+function string.ReplaceObsceneWords( sStr )
+	if not sStr or not isstring( sStr ) then A.Error( 'General.String', 'RemoveObsceneWords | sStr is not selected!' ) return end
+
+	local str = ''
+	for i = 1, utf8.len( sStr ) do str = str..'*' end
+	
+	return str
+end
+
+function string.FindPlayersByNick( sKey )
+	if not sKey or not isstring( sKey ) then A.Error( 'General.String', 'FindPlayers | sKey is not selected!' ) return end
+
+	sKey = string.lower( sKey )
+
+	local players = {}
+
+	for _, ply in ipairs( player.GetAll() ) do
+		local nick = string.lower( ply:Nick() )
+		if string.find( nick, sKey ) then players[ #players + 1 ] = ply end
+	end
+
+	if ( #players == 0 ) then return end
+
+	return players
+end
+
+local a = string.FindPlayersByNick( 'tita' )
+PrintTable( a )
+
+-- --------------------------------------------------------------------------------------------------------------------------------------------
+function string.Capitalize( sString )
+    -- https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L572
+    -- update like Python
+    sString = sString or ''
+    sString = string.lower( sString )
+
+	local str = Explode( '_', sString )
+	for k, v in ipairs( str ) do
+        local sub1, sub2 = string.sub( v, 1, 1 ), string.sub( v, 2 )
+		str[ k ] = string.upper( sub1 )..sub2
+	end
+
+	str = string.Implode( '_', str )
+
+	return str
+end
+
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 function string.ExplodeDash( sSeparator )
     if ( separator == '' ) then return totable( str ) end
 
@@ -142,37 +207,6 @@ function string.ExplodeDash( sSeparator )
 
 	return ret
 end
-
-function string.ExplodeCustom( nType, sSeparator, sStr, bPattern )
-    nType = nType or 0
-
-    if ( nType == 1 ) then return string.ExplodeDash( sSeparator, sStr, bPattern )
-    else return string.Explode( sSeparator, sStr, bPattern )
-    end
-end
-
--- -------------------------------------------------------------------------------------
--- by Odic-Force
-function string.Capitalize( sString )
-    -- https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L572
-    -- update like Python
-    sString = sString or ''
-    sString = string.lower( sString )
-
-	local str = Explode( '_', sString )
-	for k, v in ipairs( str ) do
-        local sub1, sub2 = string.sub( v, 1, 1 ), string.sub( v, 2 )
-		str[ k ] = string.upper( sub1 )..sub2
-	end
-
-	str = string.Implode( '_', str )
-
-	return str
-end
-
--- -------------------------------------------------------------------------------------
--- by SuperiorServers
--- Source: https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/string.lua
 
 function string.Random( nChars )
     -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/string.lua#L1
@@ -204,7 +238,7 @@ function string:Apostrophe()
     return ( self:sub( len, len ):lower() == 's' ) and '\'' or '\'s'
 end
 
-function string:AOrAn()
+function string:GetIndefiniteArticle()
     -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/string.lua#L22
     return self:match( '^h?[AaEeIiOoUu]' ) and 'an' or 'a'
 end
@@ -249,7 +283,7 @@ function string:ParseURL()
 	return ans
 end
 
-function string.ExplodeQuotes( sStr ) -- TODO from original: Re-do this one of these days
+function string.ExplodeQuotes( sStr )
     -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/string.lua#L59
 	str = ' ' .. sStr .. ' '
 	local res = {}
@@ -280,7 +314,6 @@ function string.FromNumbericIP( nIP )
 	return rshift( band( nIP, 0xFF000000 ), 24 ) .. '.' .. rshift( band( nIP, 0x00FF0000 ), 16 )..'.'..rshift( band( nIP, 0x0000FF00 ), 8 )..'.'..band( nIP, 0x000000FF )
 end
 
--- Stolen from maestro
 local TIME_SECOND = 1
 local TIME_MINUTE = TIME_SECOND * 60
 local TIME_HOUR = TIME_MINUTE * 60
@@ -361,8 +394,7 @@ end
 function string:MaxCharacters( nAmount, bWithEllipses )
     -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/string.lua#L187
     nAmount = nAmount or 1
-
-    if not isnumber( nAmount ) then A.Error( 'General.String', 'MaxCharacters | nAmount is not selected!' ) return self end
+    if not nAmount or not isnumber( nAmount ) then A.Error( 'General.String', 'MaxCharacters | nAmount is not selected!' ) return self end
 	if ( #self <= nAmount ) then return self end
 
 	local str = self:sub( 1, nAmount )
@@ -393,30 +425,9 @@ function string.NiceDateDash( sStr )
     return string.NiceTime( string.ToTimeDash( sStr or '' ) )
 end
 
--- -------------------------------------------------------------------------------------
-function string.ReplaceFull( sStr, sReplace )
-	local str = ''
-	for i = 1, #sStr do str = str..sReplace end
-	
-	return str
-end
-
-function string.FindObsceneWords( sStr )
-	if not sStr or not isstring( sStr ) then A.Error( 'General.String', 'RemoveObsceneWords | sStr is not selected!' ) return '' end
-
-	return Ambi.General.Global.Words.OBSCENE[ sStr ]
-end
-
-function string.ReplaceObsceneWords( sStr )
-	local str = ''
-	for i = 1, utf8.len( sStr ) do str = str..'*' end
-	
-	return str
-end
-
--- -------------------------------------------------------------------------------------
--- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/util.lua#L158
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 function string.IsValidSteamID( sSteamID )
+	-- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/util.lua#L158
 	if not sSteamID then return false end
 
 	return sSteamID:match( 'STEAM_0:[0-1]:[0-9]+$' ) ~= nil

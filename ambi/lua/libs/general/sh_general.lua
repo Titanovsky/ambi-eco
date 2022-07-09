@@ -127,9 +127,9 @@ Ambi.General.AddConsoleCommand( 'errors', function() PrintTable( errors ) end )
 
 -------------------------------------------------------------------------------------------------------
 function Ambi.General.Material( sHeader, sParam )
-    return Material( '[ambi]/'..sHeader, sParam )
+    return Material( 'ambi/'..sHeader, sParam )
 end
 
 function Ambi.General.Sound( sHeader )
-    return '[ambi]/'..sHeader
+    return 'ambi/'..sHeader
 end

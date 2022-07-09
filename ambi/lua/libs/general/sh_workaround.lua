@@ -3,6 +3,7 @@ local MsgC, istable, isnumber = MsgC, istable, isnumber
 local table_GetKeys, table_sort, string_rep, tostring = table.GetKeys, table.sort, string.rep, tostring
 local COLOR1, COLOR2 = Color( 0, 0, 0 ), Color( 255, 255, 255 )
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 function PrintTable( tTable, nIndent, tDone )
 	if not tTable or not istable( tTable ) then Gen.Error( 'General', 'PrintTable only for table!' ) return end
 
@@ -34,6 +35,7 @@ function PrintTable( tTable, nIndent, tDone )
 	end
 end
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 printtable = PrintTable
 printTable = PrintTable
 Print = print

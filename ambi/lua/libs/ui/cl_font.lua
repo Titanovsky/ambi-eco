@@ -1,3 +1,4 @@
+Ambi.UI = Ambi.UI or {}
 Ambi.UI.Font = Ambi.UI.Font or {}
 Ambi.UI.Font.fonts = Ambi.UI.Font.fonts or {}
 
