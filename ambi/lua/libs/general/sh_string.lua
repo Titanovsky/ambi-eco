@@ -164,9 +164,6 @@ function string.FindPlayersByNick( sKey )
 	return players
 end
 
-local a = string.FindPlayersByNick( 'tita' )
-PrintTable( a )
-
 -- --------------------------------------------------------------------------------------------------------------------------------------------
 function string.Capitalize( sString )
     -- https://github.com/Odic-Force/GMStranded/blob/master/gamemodes/GMStranded/gamemode/init.lua#L572
