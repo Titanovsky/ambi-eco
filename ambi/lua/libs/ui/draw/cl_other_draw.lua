@@ -25,4 +25,4 @@ function Ambi.UI.Draw.ObliqueRectTech( wSize, hSize, xPos, yPos, cColor, bRevers
     surface.SetDrawColor( cColor.r, cColor.g, cColor.b, cColor.a )
     if matTexture then surface.SetMaterial( matTexture ) else draw.NoTexture() end
     surface.DrawPoly( rect )
-end1
+end
