@@ -1,5 +1,6 @@
 local C = Ambi.Packages.Out( 'colors' )
 
+-- ---------------------------------------------------------------------------------------------------------------------------------------
 hook.Add( 'PlayerSay', 'Ambi.ChatCommands.ExecuteCommand', function( ePly, sText )
     if ( sText[ 1 ] ~= Ambi.ChatCommands.Config.prefix ) then return end
 
@@ -11,8 +12,12 @@ hook.Add( 'PlayerSay', 'Ambi.ChatCommands.ExecuteCommand', function( ePly, sText
 
     if timer.Exists( 'AmbiChatCommandDelay:'..cmd..'['..ePly:SteamID()..']' ) then ePly:ChatSend( C.ERROR, '[•] ', C.ABS_WHITE, 'Подождите: ', C.ERROR, tostring( math.floor( timer.TimeLeft( 'AmbiChatCommandDelay:'..cmd..'['..ePly:SteamID()..']' ) + 1 ) ), C.ABS_WHITE, ' секунд' ) return '' end
     timer.Create( 'AmbiChatCommandDelay:'..cmd..'['..ePly:SteamID()..']', command.delay, 1, function() end )
-    
-    command.Action( ePly, tab )
 
-    if not command.send_in_chat then return '' end
+    if ( hook.Call( '[Ambi.ChatCommands.CanExecute]', nil, ePly, command, sText ) == false ) then return end
+    
+    local result = command.Action( ePly, tab )
+
+    if result then return '' end
+
+    hook.Call( '[Ambi.ChatCommands.Executed]', nil, ePly, command, sText )
 end )

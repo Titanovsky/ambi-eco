@@ -2,7 +2,7 @@ local Error, Warning = Ambi.General.Error, Ambi.General.Warning
 
 Ambi.ChatCommands.cmds = Ambi.ChatCommands.cmds or {}
 
-function Ambi.ChatCommands.AddCommand( sName, sType, sDescription, nDelay, fAction, bSendInChat )
+function Ambi.ChatCommands.AddCommand( sName, sType, sDescription, nDelay, fAction )
     if not fAction then Error( 'ChatCommands', 'fAction for AddCommand not found' ) return end
 
     if not sName or not isstring( sName ) then Warning( 'ChatCommands', 'sName for AddCommand not found, now sName = "test"' ) end
@@ -15,7 +15,6 @@ function Ambi.ChatCommands.AddCommand( sName, sType, sDescription, nDelay, fActi
         type = sType or 'Other',
         desc = sDescription or '',
         delay = nDelay,
-        send_in_chat = bSendInChat,
         Action = fAction
     }
 

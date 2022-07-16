@@ -1,6 +1,7 @@
 local Add = Ambi.ChatCommands.AddCommand
 local TYPE = 'Console'
 
+-- ---------------------------------------------------------------------------------------------------------------------------------------
 Add( 'retry', TYPE, 'Перезайти на сервер.', 1.5, function( ePly, tArgs ) 
     ePly:RunCommand( 'retry' )
 end )
