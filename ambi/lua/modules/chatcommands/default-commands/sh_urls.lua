@@ -1,4 +1,4 @@
-local Add = Ambi.ChatCommands.AddCommand
+local Add = Ambi.ChatCommands.Add
 local TYPE = 'URLs'
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------

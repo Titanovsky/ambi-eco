@@ -1,1 +1,0 @@
-Ambi.ConnectModule( 'player-freeze', 'Специфичная заморока игрока' )

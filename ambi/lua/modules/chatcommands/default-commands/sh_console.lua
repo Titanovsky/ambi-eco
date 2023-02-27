@@ -1,4 +1,4 @@
-local Add = Ambi.ChatCommands.AddCommand
+local Add = Ambi.ChatCommands.Add
 local TYPE = 'Console'
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------
@@ -16,6 +16,6 @@ Add( 'skybox', TYPE, 'Вкл/Выкл Skybox', 1.5, function( ePly, tArgs )
     ePly:RunCommand( 'r_3dsky '..value )
 end )
 
-Add( 'decals', TYPE, 'Очистить декали', 1.5, function( ePly, tArgs ) 
+Add( 'cleardecals', TYPE, 'Очистить декали', 1.5, function( ePly, tArgs ) 
     ePly:RunCommand( 'r_cleardecals' )
 end )

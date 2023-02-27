@@ -1,7 +1,7 @@
 local C = Ambi.Packages.Out( 'colors' )
 
 -- ---------------------------------------------------------------------------------------------------------------------------------------
-hook.Add( 'PlayerSay', 'Ambi.ChatCommands.ExecuteCommand', function( ePly, sText )
+hook.Add( 'PlayerSay', 'Ambi.ChatCommands.Execute', function( ePly, sText )
     if ( sText[ 1 ] ~= Ambi.ChatCommands.Config.prefix ) then return end
 
     local tab = string.Explode( ' ', sText )
@@ -17,7 +17,7 @@ hook.Add( 'PlayerSay', 'Ambi.ChatCommands.ExecuteCommand', function( ePly, sText
     
     local result = command.Action( ePly, tab )
 
-    if result then return '' end
+    if result or ( Ambi.ChatCommands.Config.show_commands == false ) then return '' end
 
     hook.Call( '[Ambi.ChatCommands.Executed]', nil, ePly, command, sText )
 end )

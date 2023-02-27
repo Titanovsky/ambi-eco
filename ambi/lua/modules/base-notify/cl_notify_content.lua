@@ -1,0 +1,46 @@
+local CL = Ambi.Packages.Out( 'ContentLoader' )
+
+-- ---------------------------------------------------------------------------------------------------------------------------------------
+Ambi.ContentLoader.CreateDir( 'ambi_notify' )
+
+Ambi.ContentLoader.DownloadMaterial( 'notify1_1', 'ambi_notify/error1.png', 'https://i.ibb.co/cN3y8S4/error1.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_2', 'ambi_notify/error2.png', 'https://i.ibb.co/HPbrLQs/error2.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_3', 'ambi_notify/error3.png', 'https://i.ibb.co/6FgJDmM/error3.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_4', 'ambi_notify/error4.png', 'https://i.ibb.co/HLZB5Pv/error4.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_5', 'ambi_notify/error5.png', 'https://i.ibb.co/G2v2TY0/error5.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_6', 'ambi_notify/error6.png', 'https://i.ibb.co/MDZpDmY/error6.png' )
+
+Ambi.ContentLoader.DownloadMaterial( 'notify1_7', 'ambi_notify/info1.png', 'https://i.ibb.co/vXtGBjn/info1.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_8', 'ambi_notify/info2.png', 'https://i.ibb.co/gvFHX3V/info2.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_9', 'ambi_notify/info3.png', 'https://i.ibb.co/2gmBkDQ/info3.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_10', 'ambi_notify/info4.png', 'https://i.ibb.co/ZYf9pnR/info4.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_11', 'ambi_notify/info5.png', 'https://i.ibb.co/GH8CNth/info5.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_12', 'ambi_notify/info6.png', 'https://i.ibb.co/ZJPRn9c/info6.png' )
+
+Ambi.ContentLoader.DownloadMaterial( 'notify1_13', 'ambi_notify/light1.png', 'https://i.ibb.co/jJPCtZ6/light1.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_14', 'ambi_notify/light2.png', 'https://i.ibb.co/sPY3jX4/light2.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_15', 'ambi_notify/light3.png', 'https://i.ibb.co/NFP6sM0/light3.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_16', 'ambi_notify/light4.png', 'https://i.ibb.co/FwHFWbN/light4.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_17', 'ambi_notify/light5.png', 'https://i.ibb.co/k34vMmM/light5.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_18', 'ambi_notify/light6.png', 'https://i.ibb.co/GFvTKsD/light6.png' )
+
+Ambi.ContentLoader.DownloadMaterial( 'notify1_19', 'ambi_notify/question1.png', 'https://i.ibb.co/kGVzbCf/question1.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_20', 'ambi_notify/question2.png', 'https://i.ibb.co/4dF8PCz/question2.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_21', 'ambi_notify/question3.png', 'https://i.ibb.co/RCQ89Rv/question3.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_22', 'ambi_notify/question4.png', 'https://i.ibb.co/10h5T23/question4.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_23', 'ambi_notify/question5.png', 'https://i.ibb.co/YR0gZ0Z/question5.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_24', 'ambi_notify/question6.png', 'https://i.ibb.co/1rYHPzs/question6.png' )
+
+Ambi.ContentLoader.DownloadMaterial( 'notify1_25', 'ambi_notify/recycle1.png', 'https://i.ibb.co/xm6rCgp/recycle1.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_26', 'ambi_notify/recycle2.png', 'https://i.ibb.co/6njTsZm/recycle2.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_27', 'ambi_notify/recycle3.png', 'https://i.ibb.co/wWLvSxh/recycle3.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_28', 'ambi_notify/recycle4.png', 'https://i.ibb.co/tZkrY9Y/recycle4.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_29', 'ambi_notify/recycle5.png', 'https://i.ibb.co/Y3sYQM4/recycle5.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_30', 'ambi_notify/recycle6.png', 'https://i.ibb.co/VYH95HF/recycle6.png' )
+
+Ambi.ContentLoader.DownloadMaterial( 'notify1_31', 'ambi_notify/success1.png', 'https://i.ibb.co/jZDBQJJ/success1.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_32', 'ambi_notify/success2.png', 'https://i.ibb.co/9GY8tqz/success2.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_33', 'ambi_notify/success3.png', 'https://i.ibb.co/5sPsyKt/success3.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_34', 'ambi_notify/success4.png', 'https://i.ibb.co/0fXp5q2/success4.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_35', 'ambi_notify/success5.png', 'https://i.ibb.co/BPMvvKR/success5.png' )
+Ambi.ContentLoader.DownloadMaterial( 'notify1_36', 'ambi_notify/success6.png', 'https://i.ibb.co/HqB9cqS/success6.png' )

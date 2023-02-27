@@ -1,1 +1,0 @@
-Ambi.ConnectModule( 'chatcommands', 'Система Чатовых Команд' )
