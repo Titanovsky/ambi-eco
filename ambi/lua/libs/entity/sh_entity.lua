@@ -3,16 +3,15 @@ Ambi.Entity = Ambi.Entity or {}
 local ENTITY = FindMetaTable( 'Entity' )
 setmetatable( Ambi.Entity, { __index = ENTITY } )
 
--- -------------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------------------------------------------------------
 function ENTITY:Distance( eObj )
 	return self:GetPos():Distance( eObj:GetPos() )
 end
 
 function ENTITY:CheckDistance( eObj, nDist )
-	return ( self:GetPos():Distance( eObj:GetPos() ) <= nDist )
+	return ( self:GetPos():Distance( eObj:GetPos() ) < nDist )
 end
 
--- -------------------------------------------------------------------------------------
 function ENTITY:SetDelayTime( sDelay, nTime, nRepetitions, fAction )
 	if not sDelay then return end
 
@@ -40,4 +39,12 @@ function ENTITY:CheckDelayTime( sDelay, fFail, fSuccess )
 
 		return false
 	end
+end
+
+function ENTITY:GetHealth()
+	return self:Health()
+end
+
+function ENTITY:MaxHealth()
+	return self:GetMaxHealth()
 end

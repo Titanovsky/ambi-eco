@@ -1,21 +1,22 @@
 Ambi.General.Network = Ambi.General.Network or {}
+Ambi.General.Network.strings = Ambi.General.Network.strings or {}
 setmetatable( Ambi.General.Network, { __index = net } )
 
--- -------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 local Gen = Ambi.General
 local NetworkIDToString, AddNetworkString, IsValid, Color = util.NetworkIDToString, util.AddNetworkString, IsValid, Color
 local Call = hook.Call
 local Start, Send, ReadUInt, WriteUInt = net.Start, SERVER and net.Send or net.SendToServer, net.ReadUInt, net.WriteUInt
--- -------------------------------------------------------------------------------------
 
-Ambi.General.Network.strings = Ambi.General.Network.strings or {}
-
-function Ambi.General.Network.AddString( sName, sDesc )
+-- --------------------------------------------------------------------------------------------------------------------------------------------
+function Ambi.General.Network.AddString( sName, fReceive )
     if not sName then return end
+
+	if fReceive then net.Receive( sName, fReceive ) end
 
     if SERVER then 
         AddNetworkString( sName ) 
-        Ambi.General.Network.strings[ sName ] = sDesc or ''
+        Ambi.General.Network.strings[ sName ] = true
 
         return sName
     end
@@ -26,37 +27,17 @@ function Ambi.General.Network.GetStrings()
 end
 
 -- -------------------------------------------------------------------------------------
-function Ambi.General.Network.Incoming( nLen, ePly )
-    if SERVER and ePly.block_net_messages then return end
+function Ambi.General.Network.SafeStart( sName )
+	sName = sName:lower()
 
-    local i = net.ReadHeader()
-	local strName = util.NetworkIDToString( i )
+	if Ambi.General.Network.strings[ sName ] or net.Receivers[ sName ] then return Start( sName ) end
 
-	strName = strName:lower()
-	
-	local func = net.Receivers[ strName:lower() ]
-	if ( func == nil ) then return end
+	Ambi.General.Network.AddString( sName )
 
-	if ( hook.Call( '[Ambi.General.Network.CanIncoming]', nil, ePly, strName, func, nLen ) == false ) then return end
-
-	nLen = nLen - 16
-	
-	func( nLen, ePly )
-
-    hook.Call( 'IncomingNetMessage', nil, nLen, ePly, strName )
-    hook.Call( '[Ambi.General.Network.Incoming]', nil, nLen, ePly, strName )
+	return Start( sName )
 end
 
-function Ambi.General.Network.Receive( sNetString, fCallback )
-    if ( sNetString == nil ) then Gen.Error( 'General.Network', 'Receive | sNetString == nil' ) return end
-	if ( fCallback == nil ) then Gen.Error( 'General.Network', 'Receive | fCallback == nil' ) return end
-
-    net.Receivers[ sNetString:lower() ] = fCallback
-
-    hook.Call( '[Ambi.General.Network.Receive]', nil, sNetString, fCallback )
-end
-
-function Ambi.General.Network.Ping( ePly, sMsg ) -- TODO: Сделать для Player:PingNetwork( sMsg )
+function Ambi.General.Network.Ping( ePly, sMsg )
     -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/net.lua
 	Start( sMsg )
 	Send( ePly )
@@ -64,11 +45,19 @@ function Ambi.General.Network.Ping( ePly, sMsg ) -- TODO: Сделать для 
     hook.Call( '[Ambi.General.Network.Ping]', nil, sMsg, ePly )
 end
 
--- -------------------------------------------------------------------------------------
--- by SuperiorServers
--- Source: https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/net.lua
+function Ambi.General.Network.SendFilter( fFilter )
+	if CLIENT or not fFiler then return end
 
+	for _, ply in ipairs( player.GetAll() ) do
+		if fFilter( ply ) then net.Send( ply ) end
+	end
+end
+
+-- -------------------------------------------------------------------------------------
 function Ambi.General.Network.WriteEntity( eObj )
+	-- by SuperiorServers
+	-- Source: https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/net.lua
+
 	if IsValid( eObj ) then
 		WriteUInt( eObj:EntIndex(), 13 )
 	else

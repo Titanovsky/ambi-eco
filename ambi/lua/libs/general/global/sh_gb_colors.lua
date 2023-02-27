@@ -3,8 +3,8 @@ Ambi.General.Global = Ambi.General.Global or {}
 -- -------------------------------------------------------------------------------------
 local Color = function( nRed, nGreen, nBlue, nAlpha ) return { r = nRed, g = nGreen, b = nBlue, a = nAlpha or 255 } end
 local C_DEFAULT = Color( 0x0, 0x0, 0x0 )
--- -------------------------------------------------------------------------------------
 
+-- -------------------------------------------------------------------------------------
 Ambi.General.Global.Colors = Ambi.General.Global.Colors or {
     -- Absolutly
     ABS_RED     = Color( 255, 0, 0 ),
@@ -41,6 +41,23 @@ Ambi.General.Global.Colors = Ambi.General.Global.Colors or {
     AMBI_BLACK       = Color( 56, 56, 56 ),
     AMBI_WHITE       = Color( 230, 230, 230 ),
     AMBI_GRAY        = Color( 173, 173, 173 ),
+
+    -- Shortcut
+    WHITE = Color( 255, 255, 255),
+    BLACK = Color( 0, 0, 0),
+    RED = Color( 219, 72, 46 ),
+    GREEN = Color( 67, 184, 28 ),
+    BLUE = Color( 0, 145, 255 ),
+    PURPLE = Color( 160, 39, 217 ),
+    YELLOW = Color( 255, 252, 97 ),
+
+    W = Color( 255, 255, 255),
+    B = Color( 0, 0, 0),
+    R = Color( 219, 72, 46 ),
+    G = Color( 67, 184, 28 ),
+    B = Color( 0, 145, 255 ),
+    P = Color( 160, 39, 217 ),
+    Y = Color( 255, 252, 97 ),
 
     -- https://flatuicolors.com/palette/defo
     FLAT_RED            = Color( 231, 76, 60 ), -- alizarin

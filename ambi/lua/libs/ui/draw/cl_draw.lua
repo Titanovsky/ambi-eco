@@ -3,6 +3,9 @@ Ambi.UI.Draw = Ambi.UI.Draw or {}
 -- --------------------------------------------------------------------------------------------------------------------------------------------
 local C = Ambi.General.Global.Colors
 local surface, draw, math, string, render, cam, timer, table = surface, draw, math, string, render, cam, timer, table
+local istable = istable
+local DrawSimpleTextOutline = draw.SimpleTextOutlined
+local GetFont = Ambi.UI.GetFont
 
 local ROUNDED_ANGLES = {
     [ 0 ] = { true, true, true, true },
@@ -81,7 +84,7 @@ local ALIGN_PATTERNS = {
     [ 'c' ] = { TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER },
 }
 
-local DEFAULT_MAT = Material( '' )
+local DEFAULT_MAT = Material( 'icon16/accept.png' )
 local BLUR = Material( 'pp/blurscreen' )
 
 local cache_fonts = {}
@@ -132,28 +135,27 @@ function Ambi.UI.Draw.Box( wSize, hSize, xPos, yPos, cColor, nRounded, anyRounde
     wSize, hSize, xPos, yPos = wSize or 0, hSize or 0, xPos or 0, yPos or 0
     cColor = cColor or C.ABS_WHITE
     nRounded = nRounded or 0
-    sRoundedAngles = ROUNDED_ANGLES[ anyRoundedAngles or 0 ] or ROUNDED_ANGLES[ 0 ]
+    sRoundedAngles = istable( anyRoundedAngles ) and anyRoundedAngles or ROUNDED_ANGLES[ anyRoundedAngles or 0 ] or ROUNDED_ANGLES[ 0 ]
 
     draw.RoundedBoxEx( nRounded, xPos, yPos, wSize, hSize, cColor, sRoundedAngles[ 1 ], sRoundedAngles[ 2 ], sRoundedAngles[ 3 ], sRoundedAngles[ 4 ] )
 end
 
 function Ambi.UI.Draw.Text( xPos, yPos, sText, sFont, cColor, anyAlign, nOutlineWeight, cColorOutline )
-    -- @ the method may be heavy and eating more FPS!
-    local Draw = ( ( nOutlineWeight or 0 ) > 0 ) and draw.SimpleTextOutlined or draw.SimpleText
-    local font, y, align = sFont or 'Default', yPos or 0, ALIGN_PATTERNS[ anyAlign or 0 ] or ALIGN_PATTERNS[ 0 ]
+    -- this method may be heavy and eating more FPS!
+    local font, y, align = GetFont( sFont ) or 'CloseCaption_Normal', yPos or 0, ALIGN_PATTERNS[ anyAlign or 0 ] or ALIGN_PATTERNS[ 0 ]
 
     local tab = string.Explode( '\n', sText )
     for i = 1, #tab do
         local str = tab[ i ]
         local y_offset = Ambi.UI.Draw.GetTextSizeY( font, str ) or 0
-        Draw( str, font, xPos or 0, y + ( y_offset ) * ( i - 1 ), cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 1, cColorOutline or C.ABS_BLACK ) 
+        DrawSimpleTextOutline( str, font, xPos or 0, y + ( y_offset ) * ( i - 1 ), cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 1, cColorOutline or C.ABS_BLACK ) 
     end
 end
 
 function Ambi.UI.Draw.SimpleText( xPos, yPos, sText, sFont, cColor, anyAlign, nOutlineWeight, cColorOutline )
-    local font, align = sFont or 'Default', ALIGN_PATTERNS[ anyAlign or 0 ] or ALIGN_PATTERNS[ 0 ]
+    local font, align = GetFont( sFont ) or 'CloseCaption_Normal', ALIGN_PATTERNS[ anyAlign or 0 ] or ALIGN_PATTERNS[ 0 ]
 
-    draw.SimpleTextOutlined( sText, font, xPos or 0, yPos or 0, cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 0, cColorOutline or C.ABS_BLACK ) 
+    DrawSimpleTextOutline( sText, font, xPos or 0, yPos or 0, cColor or C.ABS_WHITE, align[ 1 ], align[ 2 ], nOutlineWeight or 0, cColorOutline or C.ABS_BLACK ) 
 end
 
 function Ambi.UI.Draw.Material( wSize, hSize, xPos, yPos, matImage, cColor )

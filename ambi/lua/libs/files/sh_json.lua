@@ -1,10 +1,10 @@
-Ambi.Files.JSON = AMB.Files.JSON or {}
+Ambi.Files.JSON = Ambi.Files.JSON or {}
 
 local Gen = Ambi.General
-local util, isstring, istable = util, isstring, istable
 
 -- Тут я решил сделать так, чтобы любое значение возвращало, это связанно с тем, чтобы запись/чтение файлов не прерывалось!
 
+--! Устаревший метод, желательно не используйте его. Используйте Ambi.JSON
 function Ambi.Files.JSON.In( tData, bPrint )
     if ( tData == nil ) then Gen.Error( 'Files.JSON', 'In | tData is not exists!' ) return {} end
     if isstring( tData ) then Gen.Error( 'Files.JSON', 'In | Type of tData is a table, maybe, mixed up JSON.In with JSON.Out' ) return {} end
@@ -13,6 +13,7 @@ function Ambi.Files.JSON.In( tData, bPrint )
     return util.TableToJSON( tData, bPrint or false )
 end
 
+--! Устаревший метод, желательно не используйте его. Используйте Ambi.JSON
 function Ambi.Files.JSON.Out( sJSON )
     if ( sJSON == nil ) then Gen.Error( 'Files.JSON', 'Out | sJSON is not exists!' ) return '' end
     if istable( sJSON ) then Gen.Error( 'Files.JSON', 'Out | Type of sJSON is a table, maybe, mixed up JSON.Out with JSON.In' ) return '' end

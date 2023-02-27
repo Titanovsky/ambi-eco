@@ -4,9 +4,9 @@ Ambi.UI.Chat = Ambi.UI.Chat or {}
 -- -------------------------------------------------------------------------------------
 local Network = Ambi.General.Network
 local IsValid, net, surface, FindMetaTable, unpack = IsValid, net, surface, FindMetaTable, unpack
--- -------------------------------------------------------------------------------------
 local CHAT_NET_STRING = Network.AddString( 'ambi_ui_chat_send' )
 
+-- -------------------------------------------------------------------------------------
 function Ambi.UI.Chat.Send( ePly, ... )
     if not IsValid( ePly ) or not ePly:IsPlayer() then return end
     local tab = { ... }
@@ -16,7 +16,7 @@ function Ambi.UI.Chat.Send( ePly, ... )
     net.Send( ePly )
 end
 
-function Ambi.UI.Chat.SendLocal( vPos, nRadius, ... )
+function Ambi.UI.Chat.SendInRadius( vPos, nRadius, ... )
     local tab = { ... }
     local entities = ents.FindInSphere( vPos or Vector( 0, 0, 0 ), nRadius or 0 )
 
@@ -30,12 +30,12 @@ function Ambi.UI.Chat.SendLocal( vPos, nRadius, ... )
     end
 end
 
-function Ambi.UI.Chat.SendFiler( fFilter, ... )
+function Ambi.UI.Chat.SendFilter( fFilter, ... )
     if not fFilter then return end
 
     local tab = { ... }
-    local players = player.GetHumans()
-
+    
+    local players = player.GetAll()
     for i = 1, #players do
         local ply = players[ i ]
         if fFilter( ply ) then
@@ -61,4 +61,20 @@ function PLAYER:ChatSend( ... )
     local tab = { ... }
     
     Ambi.UI.Chat.Send( self, unpack( tab ) )
+end
+
+function PLAYER:ChatSendAll( ... ) -- is really bad and lazy the way!
+    local tab = { ... }
+    
+    Ambi.UI.Chat.SendAll( unpack( tab ) )
+end
+
+function PLAYER:ChatSendDelay( nDelay, ... )
+    local tab = { ... }
+    
+    timer.Simple( nDelay or 0, function()
+        if not IsValid( self ) then return end
+    
+        Ambi.UI.Chat.Send( self, unpack( tab ) )
+    end )
 end

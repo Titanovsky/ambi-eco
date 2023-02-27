@@ -1,8 +1,10 @@
 Ambi.General.Language = Ambi.General.Language or {}
 
+-- -------------------------------------------------------------------------------------
 local istable, GetConVarString, tostring, isstring = istable, GetConVarString, tostring, isstring
-local phrases = {}
+local phrases = {} --! DON'T RESAVE THIS FILE, WHEN YOUR SERVER WORKING! I made this decision for faster check in every frame (see Ambi.UI.Draw.Text)
 
+-- -------------------------------------------------------------------------------------
 function Ambi.General.Language.Add( sPattern, tLanguages )
     if not tLanguages or istable( tLanguages ) then return end
     if not sPattern or isstring( sPattern ) then return end
@@ -13,16 +15,15 @@ function Ambi.General.Language.Add( sPattern, tLanguages )
 end
 
 function Ambi.General.Language.Get( sPattern )
-    local lang = SERVER and Ambi.Config.language or GetConVarString( 'gmod_language' )
+    if not phrases[ sPattern ] then return sPattern end
 
-    sPattern = tostring( sPattern )
-    if not phrases[ sPattern ] then return '' end
-    if not phrases[ sPattern ][ lang ] then return '' end
+    local lang = GetConVarString( 'gmod_language' )
+    if not phrases[ sPattern ][ lang ] then return ( phrases[ sPattern ][ 'en' ] or sPattern ) end -- Если языка нет, то Английский, либо никакой
 
-    return Ambi.General.Language.table[ sPattern ][ lang ]
+    return phrases[ sPattern ][ lang ]
 end
 
-function Ambi.General.Language.AddBetweenRussianAndEnglish( sPattern, sRussian, sEnglish )
+function Ambi.General.Language.SimpleAdd( sPattern, sRussian, sEnglish )
     sRussian = sRussian or ''
     sEnglish = sEnglish or sRussian
 

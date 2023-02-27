@@ -1,5 +1,9 @@
 Ambi = Ambi or {}
-Ambi.version = '6.1'
+Ambi.version = '6.6'
+
+print( '\n==================================' )
+print( '|| \tAmbi Eco v'..Ambi.version..' \t||' )
+print( '==================================\n' )
 
 AMB = setmetatable( AMB or {}, { __index = Ambi } )-- для совместимости
 
@@ -55,12 +59,19 @@ local function FileWorkshopInitialize( sFile )
 end
 
 local flags_init = {
+    [ 'shared' ] = FileSharedInitialize,
     [ 'sh' ] = FileSharedInitialize,
+    [ 'server' ] = FileServerInitialize,
     [ 'sv' ] = FileServerInitialize,
+    [ 'client' ] = FileClientInitialize,
     [ 'cl' ] = FileClientInitialize,
 
+    [ 'config' ] = FileSharedInitialize,
     [ 'cfg' ] = FileSharedInitialize,
+    [ 'entity' ] = FileSharedInitialize,
     [ 'ent' ] = FileSharedInitialize,
+    [ 'weapon' ] = FileSharedInitialize,
+    [ 'gun' ] = FileSharedInitialize,
     [ 'wep' ] = FileSharedInitialize,
     [ 'tool' ] = FileSharedInitialize,
     [ 'npc' ] = FileSharedInitialize,
@@ -113,6 +124,9 @@ local NAMES_LIBRARIES = {
     [ 'SQL' ] = true,
     [ 'Timer' ] = true,
     [ 'UI' ] = true,
+    [ 'Packages' ] = true,
+    [ 'JSON' ] = true,
+    [ 'SaveData' ] = true,
 }
 
 function Ambi.CreateModule( sTable )
@@ -227,10 +241,6 @@ local ConsoleRun, FileDirCreate, FileExists = RunConsoleCommand, file.CreateDir,
 
 if ( FileExists( 'ambi', 'DATA' ) == false ) then FileDirCreate( 'ambi' ) end -- checking on existence of a folder 
 ----------------------------------------------------------------------------------------------------
-
-print( '\n==================================' )
-print( '|| \tAmbi Eco v'..Ambi.version..' \t||' )
-print( '==================================\n' )
 
 if game.SinglePlayer() then return end
 

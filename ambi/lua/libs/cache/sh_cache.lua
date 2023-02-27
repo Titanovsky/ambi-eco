@@ -5,6 +5,7 @@ local Gen = Ambi.General
 local Fetch, isstring, isnumber, print, file = http.Fetch, isstring, isnumber, print, file
 local crc = util.CRC
 local MIN_SIZE_FILE = 2
+local MAX_SIZE_ATTEMPTS = 2^12
 
 file.CreateDir( 'ambi/cache' )
 
@@ -14,7 +15,7 @@ function Ambi.Cache.CacheURL( sPath, sURL, nAttempts, bNotRewrite ) -- Old
 
     if not sPath or not isstring( sPath ) then return end
     if not sURL or not isstring( sURL ) then return end
-    if not nAttempts or not isnumber( nAttempts ) or ( nAttempts < 0 ) or ( nAttempts >= 256 ) then Gen.Error( 'Cache', 'CacheURL | nAttempts is not valid or very long/small' ) return end
+    if not nAttempts or not isnumber( nAttempts ) or ( nAttempts < 0 ) or ( nAttempts >= MAX_SIZE_ATTEMPTS ) then Gen.Error( 'Cache', 'CacheURL | nAttempts is not valid or very long/small' ) return end
     nAttempts = nAttempts or 1
 
     Fetch( sURL, function( sBody, nSize ) 

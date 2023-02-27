@@ -3,7 +3,7 @@
 Ambi.UI.GUI = Ambi.UI.GUI or {}
 
 -- --------------------------------------------------------------------------------------------------------------------------------------------
-local C, Draw = Ambi.Packages.Out( 'colors, draw' )
+local C, Draw = Ambi.General.Global.Colors, Ambi.UI.Draw
 local vgui, draw, surface, ValidPanel = vgui, draw, surface, ValidPanel
 
 local blur      = Material( 'pp/blurscreen' )

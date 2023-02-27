@@ -2,12 +2,12 @@ Ambi.General.Utility.Coding = Ambi.General.Utility.Coding or {}
 util.Coding = util.Coding or {}
 setmetatable( Ambi.General.Utility.Coding, { __index = util.Coding } )
 
--- -------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 local format, byte, gsub, char = string.format, string.byte, string.gsub, string.char
--- -------------------------------------------------------------------------------------
 
--- Source: https://gist.github.com/liukun/f9ce7d6d14fa45fe9b924a3eed5c3d99
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 function util.Coding.CharToHEX( sChar )
+	-- Source: https://gist.github.com/liukun/f9ce7d6d14fa45fe9b924a3eed5c3d99
     return format( '%%%02X', byte( sChar or '' ) )
 end
 
@@ -36,10 +36,9 @@ function util.Coding.DecodeURL( sUrl )
     return str
 end
 
--- -------------------------------------------------------------------------------------
--- by SuperiorServers
--- Source: https://github.com/SuperiorServers/dash/blob/a0d4347371503b1577d72bed5f6df46d48909f56/lua/dash/extensions/server/console.lua
 function util.Coding.RGBToAnsi256( nRed, nGreen, nBlue )
+	-- by SuperiorServers
+	-- Source: https://github.com/SuperiorServers/dash/blob/a0d4347371503b1577d72bed5f6df46d48909f56/lua/dash/extensions/server/console.lua
     // https://stackoverflow.com/questions/15682537/ansi-color-specific-rgb-sequence-bash?answertab=votes#tab-top
 	if ( nRed == nGreen ) and ( nGreen == nBlue ) then
 		if ( nRed < 8 ) then return 16 end
@@ -72,3 +71,17 @@ function util.Coding.Base64Decode( sString )
 	end ) )
 end
 
+function util.Coding.EncodeNormalSteamID( sSteamID )
+	-- 'STEAM_0:1:95303327'
+	sSteamID = string.sub( sSteamID, 7, #sSteamID )
+	sSteamID = string.Replace( sSteamID, ':', '_' )
+
+	return sSteamID
+end
+
+function util.Coding.DecodeNormalSteamID( sSteamID )
+	sSteamID = string.Replace( sSteamID, '_', ':' )
+	sSteamID = 'STEAM_'..sSteamID
+
+	return sSteamID
+end

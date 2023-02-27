@@ -2,6 +2,7 @@ Ambi.RegEntity = Ambi.RegEntity or {}
 
 local C, Gen = Ambi.General.Global.Colors, Ambi.General
 
+-- ---------------------------------------------------------------------------------------------------------------------------------------
 function Ambi.RegEntity.Initialize( eObj, sModel, sMat, cColor, nUseType, nRenderMode, bDropToFloor )
     sMat = sMat or ''
     cColor = cColor or C.ABS_WHITE
@@ -19,8 +20,6 @@ function Ambi.RegEntity.Initialize( eObj, sModel, sMat, cColor, nUseType, nRende
 end
 
 function Ambi.RegEntity.Physics( eObj, nMoveType, nPhysicInit, nCollisionGroup, bEnableMotion, bWake, bSleep )
-    -- for NPC: Ambi.RegEntity.Physics( self, MOVETYPE_NONE, SOLID_BBOX, COLLISION_GROUP_PLAYER, false )
-    
     nMoveType = nMoveType or MOVETYPE_VPHYSICS
     nPhysicInit = nPhysicInit or SOLID_VPHYSICS
     nCollisionGroup = nCollisionGroup or COLLISION_GROUP_NONE
@@ -39,7 +38,11 @@ function Ambi.RegEntity.Physics( eObj, nMoveType, nPhysicInit, nCollisionGroup, 
     return phys
 end
 
-function Ambi.RegEntity.Capability( eObj, nCap )
+function Ambi.RegEntity.PhysicsNPC( eObj, nMoveType, nPhysicInit, nCollisionGroup, bEnableMotion, bWake, bSleep )
+    return Ambi.RegEntity.Physics( eObj, MOVETYPE_NONE, SOLID_BBOX, COLLISION_GROUP_PLAYER, false )
+end
+
+function Ambi.RegEntity.Capability( eObj, nCap ) 
     if not nCap then Gen.Error( 'Entities', 'Capability not found' ) return end
 
     eObj:CapabilitiesAdd( nCap )
@@ -47,7 +50,7 @@ function Ambi.RegEntity.Capability( eObj, nCap )
     return eObj
 end
 
-function Ambi.RegEntity.Hull( eObj, nHullType )
+function Ambi.RegEntity.Hull( eObj, nHullType ) 
     nHullType = nHullType or HULL_HUMAN
 
     eObj:SetHullType( nHullType )

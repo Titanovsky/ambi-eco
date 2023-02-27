@@ -11,7 +11,8 @@ function Ambi.UI.GUI.Draw( sVGUIType, vguiParent )
 end
 
 function Ambi.UI.GUI.DrawFrame( vguiParent, wSize, hSize, xPos, yPos, sTitle, bMakePopup, bDraggable, bShowBtns, fPaint )
-    local frame = vgui.Create( 'DFrame', vguiParent )
+    -- vguiParent is the design problem, which won't cause a lot of mistakes.
+    local frame = vgui.Create( 'DFrame' )
     frame:SetSize( wSize or 0, hSize or 0 )
     frame:SetPos( xPos or 0, yPos or 0 )
     frame:SetTitle( sTitle or '' )
@@ -193,6 +194,25 @@ function Ambi.UI.GUI.DrawModel3D( vguiParent, wSize, hSize, xPos, yPos, sModelPa
     frame:SetSize( wSize or 0, hSize or 0 )
     frame:SetPos( xPos or 0, yPos or 0 )
     frame:SetModel( sModelPath or '' )
+
+    return frame
+end
+
+function Ambi.UI.GUI.DrawRichText( vguiParent, wSize, hSize, xPos, yPos, sFont, ... )
+    local frame = vgui.Create( 'RichText', vguiParent )
+    frame:SetSize( wSize or 0, hSize or 0 )
+    frame:SetPos( xPos or 0, yPos or 0 )
+    frame.PerformLayout = function( self )
+        self:SetFontInternal( sFont )
+    end
+
+    for i, v in ipairs( { ... } ) do
+        if istable( v ) then 
+            frame:InsertColorChange( v.r, v.g, v.b, v.a )
+        else
+            frame:AppendText( tostring( v ) )
+        end
+    end
 
     return frame
 end

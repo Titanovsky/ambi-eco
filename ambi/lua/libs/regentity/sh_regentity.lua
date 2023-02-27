@@ -22,8 +22,8 @@ function Ambi.RegEntity.Register( sClass, sType, tEntity )
     if not istable( tEntity ) then Gen.Error( 'RegEntity', 'The third argument is not a table with data of entity' ) return end
 
     sType = string.lower( sType )
-
-    if ( sType == 'ents' ) or ( sType == 'entities' ) or ( sType == 'sent' ) or ( sType == 'ent' ) then 
+  
+    if ( sType == 'ents' ) or ( sType == 'entities' ) or ( sType == 'sent' ) or ( sType == 'ent' ) or ( sType == 'entity' ) or ( sType == 'npc' ) then 
         Ambi.RegEntity.ents[ sClass ] = tEntity return scripted_ents.Register( tEntity, string.lower( sClass ) )
     elseif ( sType == 'weapons' ) or ( sType == 'swep' ) or ( sType == 'wep' ) or ( sType == 'gun' ) or ( sType == 'weapon' ) then 
         Ambi.RegEntity.weps[ sClass ] = tEntity return weapons.Register( tEntity, string.lower( sClass ) ) 
@@ -36,10 +36,45 @@ function Ambi.RegEntity.Register( sClass, sType, tEntity )
     return false
 end
 
-function Ambi.RegEntity.NPC( sModel )
+--! This method is not work and will remove in future
+function Ambi.RegEntity.Create( sClass, sPrintName, sCategory, sModel, bSpawnable, nMoveType, nPhysicInit, bEnableMotion, bWake )
     local ENT = {}
 
+    ENT.Class = sClass
+    ENT.Type = 'anim'
+    ENT.PrintName	= sPrintName or sClass
+    ENT.Author		= 'Ambi'
+    ENT.Category	= sCategory or 'Ambi'
+    ENT.Spawnable   = ( bSpawnable == nil ) and true or bSpawnable
     ENT.RenderGroup = RENDERGROUP_BOTH
+
+    if SERVER then
+        ENT.PostInit = function() end
+
+        ENT.Initialize = function( self )
+            Ambi.RegEntity.Initialize( self, sModel )
+            Ambi.RegEntity.Physics( self, nMoveType, nPhysicInit, nil, bEnableMotion, bWake, not bWake )
+
+            self.PostInit( self )
+        end
+    end
+
+    return ENT
+end
+
+function Ambi.RegEntity.CreateNPC( sClass, sModel, sName, sCategory, bSpawnable )
+    local ENT = {}
+
+    ENT.Class = sClass
+    ENT.Base = 'base_ai'
+    ENT.Type = 'ai'
+    ENT.PrintName = sName
+    ENT.Category = sCategory
+    ENT.Author = 'Ambi.RegEntity'
+    ENT.RenderGroup = RENDERGROUP_BOTH
+    ENT.Spawnable = bSpawnable
+    ENT.PostInit = function() end
+    ENT.PostDraw = function() end
 
     if SERVER then
         function ENT:Initialize()
@@ -48,14 +83,22 @@ function Ambi.RegEntity.NPC( sModel )
             Ambi.RegEntity.Hull( self )
             Ambi.RegEntity.Capability( self, CAP_ANIMATEDFACE )
             Ambi.RegEntity.Capability( self, CAP_TURN_HEAD )
+
+            self.PostInit( self )
+        end
+    else
+        function ENT:DrawTranslucent()
+            Ambi.RegEntity.Draw( self, false )
+
+            self.PostDraw( self )
         end
     end
 
     return ENT
 end
 
-function Ambi.RegEntity.SimpleCreateNPC( sClass, sModel, tData )
-    local ENT = Ambi.RegEntity.NPC( sModel )
+function Ambi.RegEntity.SimpleCreateNPC( sClass, sName, sCategory, sModel, bSpawnable, tData )
+    local ENT = Ambi.RegEntity.NPC( sClass, sModel, sName, sCategory, bSpawnable )
 
     for k, v in pairs( tData ) do
         ENT[ k ] = v
@@ -371,8 +414,10 @@ function Ambi.RegEntity.AddTool( tTool )
 
         language.Add( 'tool.'..mode..'.name', TOOL.Name or phrases.name )
 
-        for i, v in pairs( phrases ) do
-            language.Add( 'tool.'..mode..'.'..i, v )
+        if phrases then
+            for i, v in pairs( phrases ) do
+                language.Add( 'tool.'..mode..'.'..i, v )
+            end
         end
     end
 

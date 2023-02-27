@@ -1,13 +1,13 @@
 Ambi.General.Utility = Ambi.General.Utility or {}
 setmetatable( Ambi.General.Utility, { __index = util } )
 
--- -------------------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 local A = Ambi.General
 local player, string, ipairs, table, tostring, os, isstring = player, string, ipairs, table, tostring, os, isstring
 local surface, IsValid, tonumber = surface, IsValid, tonumber
 local math, ents, bit, Vector = math, ents, bit, Vector
--- -------------------------------------------------------------------------------------
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 function util.FindPlayer( sArg, fData, bOnlyHumans )
     if not fData then A.Error( 'Ambition.Utility', 'Not specified fData' ) return false end
 
@@ -100,7 +100,6 @@ function util.Copy( anyVar )
 	return anyVar
 end
 
--- -------------------------------------------------------------------------------------
 -- from: https://gitlab.com/DBotThePony/DLib/-/blob/develop/lua_src/dlib/util/util.lua#L77
 function util.VectorRandom( nX, nY, nZ )
 	nX, nY, nZ = nX or 1, nY or 1, nZ or 1
@@ -112,7 +111,6 @@ function VectorRandom( nX, nY, nZ )
 	return util.VectorRandom( nX, nY, nZ )
 end
 
--- -------------------------------------------------------------------------------------
 -- From: https://github.com/Kefta/gs_lib/blob/master/lua/code_gs/lib/util.lua#L66
 function util.ClearTrace()
 	return {
@@ -187,8 +185,6 @@ function util.IsInWater( vPos )
 
 	return util.TraceLine( trace ).Hit
 end
-
--- -------------------------------------------------------------------------------------
 
 -- Tracer flags
 TRACER_FLAG_WHIZ = 0x0001

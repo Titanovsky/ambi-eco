@@ -28,7 +28,7 @@ end
 
 function Ambi.Files.CreateSafe( sName, sContent, bInConfigFolder )
     local path = bInConfigFolder and Ambi.Files.SERVER_DIR..sName or sName
-    local file_valid = Ambi.Files.Valid( path, 'DATA', true )
+    local file_valid = Ambi.Files.Valid( path, 'DATA', bInConfigFolder )
 
     if file_valid then return false end
 
