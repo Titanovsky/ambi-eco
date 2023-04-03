@@ -149,6 +149,7 @@ function Ambi.UI.GUI.DrawComboBox( vguiParent, wSize, hSize, xPos, yPos, sFont, 
     frame:SetPos( xPos or 0, yPos or 0 )
     frame:SetFont( sFont or 'Default' )
     frame:SetValue( sValue or '' )
+    frame:SetSortItems( false )
     if fOnSelect then frame.OnSelect = fOnSelect end
 
     return frame

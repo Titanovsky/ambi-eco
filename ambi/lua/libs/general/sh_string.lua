@@ -51,6 +51,7 @@ for low_char, up_char in pairs( RUSSIAN_CHARS_UPPER ) do
 	RUSSIAN_CHARS_LOWER[ up_char ] = low_char
 end
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------
 local Lower = string.lower
 function string.ForceLower( sString )
 	local str = ''
@@ -106,9 +107,10 @@ function string.ToSafe( sString )
 
     local new_str = ''
     for i = 1, #str do
-        if KEYS.BLACKLIST[ str[ i ] ] then continue end 
+		local char = utf8.GetChar( str, i )
+        if KEYS.BLACKLIST[ char ] then continue end 
 
-        new_str = new_str..str[ i ]
+        new_str = new_str..char
     end
     new_str = Trim( new_str, ' ' )
 
@@ -211,7 +213,7 @@ function string.Random( nChars )
     if ( nChars > 256 ) or ( nChars <= 0 ) then A.Error( 'General.String', 'Random | nChars is very long or small ( 0 > nChars > 256)' ) return '' end
 
     local str = ''
-    for i = 1, ( nChars or 1 ) do
+    for i = 1, nChars do
         str = str..Char( Random( 97, 122 ) ) 
     end
 

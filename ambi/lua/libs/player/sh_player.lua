@@ -178,3 +178,12 @@ end
 function PLAYER:WalkSpeed()
 	return self:GetWalkSpeed()
 end
+
+-- -------------------------------------------------------------------------------------------------------------------------------------------
+function PLAYER:NiceSteamID()
+	return string.Replace( string.sub( self:SteamID(), 7, #self:SteamID() ), ':', '_' )
+end
+
+function PLAYER:CheckNiceSteamID( sNiceSteamID )
+	return ( 'STEAM_'..string.Replace( sNiceSteamID, '_', ':' ) == self:SteamID() )
+end
