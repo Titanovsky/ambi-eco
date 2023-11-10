@@ -141,7 +141,7 @@ function Ambi.UI.Draw.Box( wSize, hSize, xPos, yPos, cColor, nRounded, anyRounde
 end
 
 function Ambi.UI.Draw.Text( xPos, yPos, sText, sFont, cColor, anyAlign, nOutlineWeight, cColorOutline )
-    -- this method may be heavy and eating more FPS!
+    --! this method may be heavy and eating more FPS!
     local font, y, align = GetFont( sFont ) or 'CloseCaption_Normal', yPos or 0, ALIGN_PATTERNS[ anyAlign or 0 ] or ALIGN_PATTERNS[ 0 ]
 
     local tab = string.Explode( '\n', sText )

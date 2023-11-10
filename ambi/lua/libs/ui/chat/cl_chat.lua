@@ -59,28 +59,37 @@ end
 function Ambi.UI.Chat.Send( ... )
     local tab = { ... }
 
-    if isstring( tab[ 1 ] ) then tab = SplitTableByColors( tab ) end
-
-    for i = 1, #tab do
-        local value = tab[ i ]
-
-        if isstring( value ) then
-            if StartWith( value, PATTERN_FOR_LANGUAGE ) then 
-                local endpoint = ( i == #tab ) and '' or ' ' --! workaround for string_Trim, else without Trim the string is uncorrect
-                tab[ i ] = Lang.Get( string_Trim( Replace( value, PATTERN_FOR_LANGUAGE, '' ) ) )..endpoint
-            elseif StartWith( value, PATTERN_COLOR ) and EndsWith( value, PATTERN_COLOR ) then 
-                tab[ i ] = C[ Replace( value, PATTERN_COLOR, '' ) ]
+    if isstring( tab[ 1 ] ) then
+        local result = {}
+        local used_index_colors = {} -- Цвета тоже разделяются по пробелам, и чтобы не было путаницы, он будет скипать
+        local parts = string.Explode( ' ', tab[ 1 ] )
+        
+        for i, part in ipairs( parts ) do
+            if used_index_colors[ i ] then continue end
+    
+            if part:sub(1, 1) == "#" then
+                table.insert( result, Lang.Get( part:sub(2) )..' ' )
+            elseif part:sub(1, 1) == "~" then
+                if string.EndsWith( part, '~' ) then table.insert(result, C[ part:sub( 2, #part - 1 ) ] ) continue end
+    
+                local r = tonumber( part:sub( 2 ) )
+                local g = tonumber( parts[ i + 1 ] or 0 )
+                local b = tonumber( parts[ i + 2 ] and parts[ i + 2 ]:sub( 1, #parts[ i + 2 ] - 1 ) or 0 )
+                
+                used_index_colors[ i + 1 ] = true
+                used_index_colors[ i + 2 ] = true
+    
+                table.insert(result, Color(tonumber(r), tonumber(g), tonumber(b)))
+            else
+                table.insert(result, part..' ')
             end
+        end
 
-            if not show_obscene_language:GetBool() then
-                local _tab = Explode( ' ', value )
-                for j = 1, #_tab do
-                    local word = _tab[ j ]
-                    if FindObsceneWords( word ) then _tab[ j ] = ReplaceObsceneWords( word ) end
-                end
+        tab = result
 
-                tab[ i ] = Implode( ' ', _tab )
-            end
+        local last = tab[ #tab ]
+        if isstring( last ) then
+            tab[ #tab ] = string.TrimRight( last ) -- из-за пробелов, для последнего нужно обязательно Trim
         end
     end
 

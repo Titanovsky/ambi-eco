@@ -15,9 +15,11 @@ function Ambi.General.CreateModule( sTable, sVersion, sSteamIDCreator, sDescript
     Ambi[ sTable ][ 'Config' ] = Ambi[ sTable ][ 'Config' ] or {}
     Ambi[ sTable ][ 'Meta' ] = Ambi[ sTable ][ 'Meta' ] or {}
 
-    Ambi[ sTable ].Meta.Version = sVersion or '1.0.0'
-    Ambi[ sTable ].Meta.Creator = sSteamIDCreator or ''
-    Ambi[ sTable ].Meta.Description = sDescription or ''
+    Ambi[ sTable ].Meta.Version = sVersion or Ambi[ sTable ].Meta.Version
+    Ambi[ sTable ].Meta.Creator = sSteamIDCreator or Ambi[ sTable ].Meta.Creator
+    Ambi[ sTable ].Meta.Description = sDescription or Ambi[ sTable ].Meta.Description
+
+    if not Ambi[ sTable ].Meta then Ambi[ sTable ].Meta = {} end
 
     return Ambi[ sTable ], Ambi[ sTable ][ 'Config' ]
 end

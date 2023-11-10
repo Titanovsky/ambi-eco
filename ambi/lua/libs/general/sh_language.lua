@@ -17,7 +17,7 @@ end
 function Ambi.General.Language.Get( sPattern )
     if not phrases[ sPattern ] then return sPattern end
 
-    local lang = GetConVarString( 'gmod_language' )
+    local lang = CLIENT and GetConVarString( 'gmod_language' ) or GetConVarString( 'sv_location' )
     if not phrases[ sPattern ][ lang ] then return ( phrases[ sPattern ][ 'en' ] or sPattern ) end -- Если языка нет, то Английский, либо никакой
 
     return phrases[ sPattern ][ lang ]

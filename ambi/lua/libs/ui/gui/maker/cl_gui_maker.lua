@@ -1,1 +1,0 @@
-local yes = 'Скоро' -- TODO: Maker (Шаблоны)
