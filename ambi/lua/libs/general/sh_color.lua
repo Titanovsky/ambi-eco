@@ -8,6 +8,8 @@ local tonumber, Lerp = tonumber, Lerp
 local Format, Match = string.format, string.match
 local Round = math.Round
 local BAND, RSHIFT = bit.band, bit.rshift
+
+local COLOR_WHITE, COLOR_BLACK = Color( 255, 255, 255 ), Color( 0, 0, 0 )
 -- -------------------------------------------------------------------------------------
 -- by SuperiorServers
 -- Source: https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/color.lua
@@ -65,16 +67,6 @@ end
 function COLOR:ToEncodedRGBA()
     -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/color.lua#L48
     return ( ( self.a * 0x100 + self.r ) * 0x100 + self.g ) * 0x100 + self.b
-end
-
-local COLOR_WHITE, COLOR_BLACK = Color( 255, 255, 255 ), Color( 0, 0, 0 )
-function COLOR:Lerp( nFraction, cFrom, cTo )
-    -- https://github.com/SuperiorServers/dash/blob/master/lua/dash/extensions/color.lua#L52
-    nFraction = nFraction or 0.1
-    cFrom = cFrom or COLOR_BLACK
-    cTo = cTo or COLOR_WHITE
-
-    self.r, self.g, self.b = Lerp( nFraction, cFrom.r, cTo.r ), Lerp( nFraction, cFrom.g, cTo.g ), Lerp( nFraction, cFrom.b, cTo.b ), Lerp( nFraction, cFrom.a, cTo.a )
 end
 
 function COLOR:IsLight()
